@@ -944,64 +944,7 @@ static void
 UVCHandleProcessingUnitRqts (
         void)
 {
-    CyU3PReturnStatus_t apiRetStatus = CY_U3P_SUCCESS;
-    uint16_t readCount;
-
-    switch (wValue)
-    {
-        case CY_FX_UVC_PU_BRIGHTNESS_CONTROL:
-            switch (bRequest)
-            {
-                case CY_FX_USB_UVC_GET_LEN_REQ: /* Length of brightness data = 1 byte. */
-                    glEp0Buffer[0] = 1;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_CUR_REQ: /* Current brightness value. */
-                    glEp0Buffer[0] = 0;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_MIN_REQ: /* Minimum brightness = 0. */
-                    glEp0Buffer[0] = 0;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_MAX_REQ: /* Maximum brightness = 255. */
-                    glEp0Buffer[0] = 0;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_RES_REQ: /* Resolution = 1. */
-                    glEp0Buffer[0] = 1;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_INFO_REQ: /* Both GET and SET requests are supported, auto modes not supported */
-                    glEp0Buffer[0] = 3;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_DEF_REQ: /* Default brightness value = 55. */
-                    glEp0Buffer[0] = 55;
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_SET_CUR_REQ: /* Update brightness value. */
-                    apiRetStatus = CyU3PUsbGetEP0Data (CY_FX_UVC_MAX_PROBE_SETTING_ALIGNED,
-                            glEp0Buffer, &readCount);
-                    if (apiRetStatus == CY_U3P_SUCCESS)
-                    {
-                        // SensorSetBrightness (glEp0Buffer[0]);
-                    }
-                    break;
-                default:
-                    CyU3PUsbStall (0, CyTrue, CyFalse);
-                    break;
-            }
-            break;
-
-        default:
-            /*
-             * Only the brightness control is supported as of now. Add additional code here to support
-             * other controls.
-             */
-            CyU3PUsbStall (0, CyTrue, CyFalse);
-            break;
-    }
+	CyU3PUsbStall (0, CyTrue, CyFalse);
 }
 
 /*
@@ -1011,7 +954,6 @@ static void
 UVCHandleCameraTerminalRqts (
         void)
 {
-
 	CyU3PUsbStall (0, CyTrue, CyFalse);
 }
 
