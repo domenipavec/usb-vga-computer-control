@@ -1,0 +1,13 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TI-TVP7002
+D TVP7002
+K Texas Instruments TVP7002PZP
+$ENDCMP
+#
+$CMP TVP7002
+D TVP7002PZP
+K Texas TVP7002
+$ENDCMP
+#
+#End Doc Library

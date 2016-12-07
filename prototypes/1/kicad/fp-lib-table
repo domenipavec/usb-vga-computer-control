@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name attiny841-spi)(type KiCad)(uri /home/domen/github/usb-computer-control/common/kicad-libraries/attiny841-spi.pretty)(options "")(descr ""))
+  (lib (name vga)(type KiCad)(uri /home/domen/github/usb-computer-control/common/kicad-libraries/vga.pretty)(options "")(descr ""))
+)
