@@ -68,7 +68,6 @@
 
 #include "uvc.h"
 #include "tvp7002.h"
-#include "camera_ptzcontrol.h"
 #include "cyfxgpif2config.h"
 
 /*************************************************************************************************
@@ -625,10 +624,6 @@ CyFxUVCApplnInit (void)
         CyFxAppErrorHandler (apiRetStatus);
     }
 
-#ifdef UVC_PTZ_SUPPORT
-    CyFxUvcAppPTZInit ();
-#endif
-
     clearFeatureRqtReceived = CyFalse;
 
     /* Init the GPIO module */
@@ -1016,138 +1011,8 @@ static void
 UVCHandleCameraTerminalRqts (
         void)
 {
-#ifdef UVC_PTZ_SUPPORT
-    CyU3PReturnStatus_t apiRetStatus = CY_U3P_SUCCESS;
-    uint16_t readCount;
-    uint16_t zoomVal;
-    int32_t  panVal, tiltVal;
-    CyBool_t sendData = CyFalse;
-#endif
 
-    switch (wValue)
-    {
-#ifdef UVC_PTZ_SUPPORT
-        case CY_FX_UVC_CT_ZOOM_ABSOLUTE_CONTROL:
-            switch (bRequest)
-            {
-                case CY_FX_USB_UVC_GET_INFO_REQ:
-                    glEp0Buffer[0] = 3;                /* Support GET/SET queries. */
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_CUR_REQ: /* Current zoom control value. */
-                    zoomVal  = CyFxUvcAppGetCurrentZoom ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_MIN_REQ: /* Minimum zoom control value. */
-                    zoomVal  = CyFxUvcAppGetMinimumZoom ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_MAX_REQ: /* Maximum zoom control value. */
-                    zoomVal  = CyFxUvcAppGetMaximumZoom ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_RES_REQ: /* Resolution is one unit. */
-                    zoomVal  = CyFxUvcAppGetZoomResolution ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_DEF_REQ: /* Default zoom setting. */
-                    zoomVal  = CyFxUvcAppGetDefaultZoom ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_SET_CUR_REQ:
-                    apiRetStatus = CyU3PUsbGetEP0Data (CY_FX_UVC_MAX_PROBE_SETTING_ALIGNED,
-                            glEp0Buffer, &readCount);
-                    if (apiRetStatus == CY_U3P_SUCCESS)
-                    {
-                        zoomVal = (glEp0Buffer[0]) | (glEp0Buffer[1] << 8);
-                        CyFxUvcAppModifyZoom (zoomVal);
-                    }
-                    break;
-                default:
-                    CyU3PUsbStall (0, CyTrue, CyFalse);
-                    break;
-            }
-
-            if (sendData)
-            {
-                /* Send the 2-byte data in zoomVal back to the USB host. */
-                glEp0Buffer[0] = CY_U3P_GET_LSB (zoomVal);
-                glEp0Buffer[1] = CY_U3P_GET_MSB (zoomVal);
-                CyU3PUsbSendEP0Data (wLength, (uint8_t *)glEp0Buffer);
-            }
-            break;
-
-        case CY_FX_UVC_CT_PANTILT_ABSOLUTE_CONTROL:
-            switch (bRequest)
-            {
-                case CY_FX_USB_UVC_GET_INFO_REQ:
-                    glEp0Buffer[0] = 3;                /* GET/SET requests supported for this control */
-                    CyU3PUsbSendEP0Data (1, (uint8_t *)glEp0Buffer);
-                    break;
-                case CY_FX_USB_UVC_GET_CUR_REQ:
-                    panVal   = CyFxUvcAppGetCurrentPan ();
-                    tiltVal  = CyFxUvcAppGetCurrentTilt ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_MIN_REQ:
-                    panVal   = CyFxUvcAppGetMinimumPan ();
-                    tiltVal  = CyFxUvcAppGetMinimumTilt ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_MAX_REQ:
-                    panVal   = CyFxUvcAppGetMaximumPan ();
-                    tiltVal  = CyFxUvcAppGetMaximumTilt ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_RES_REQ:
-                    panVal   = CyFxUvcAppGetPanResolution ();
-                    tiltVal  = CyFxUvcAppGetTiltResolution ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_GET_DEF_REQ:
-                    panVal   = CyFxUvcAppGetDefaultPan ();
-                    tiltVal  = CyFxUvcAppGetDefaultTilt ();
-                    sendData = CyTrue;
-                    break;
-                case CY_FX_USB_UVC_SET_CUR_REQ:
-                    apiRetStatus = CyU3PUsbGetEP0Data (CY_FX_UVC_MAX_PROBE_SETTING_ALIGNED,
-                            glEp0Buffer, &readCount);
-                    if (apiRetStatus == CY_U3P_SUCCESS)
-                    {
-                        panVal = (glEp0Buffer[0]) | (glEp0Buffer[1]<<8) |
-                            (glEp0Buffer[2]<<16) | (glEp0Buffer[2]<<24);
-                        tiltVal = (glEp0Buffer[4]) | (glEp0Buffer[5]<<8) |
-                            (glEp0Buffer[6]<<16) | (glEp0Buffer[7]<<24);
-
-                        CyFxUvcAppModifyPan (panVal);
-                        CyFxUvcAppModifyTilt (tiltVal);
-                    }
-                    break;
-                default:
-                    CyU3PUsbStall (0, CyTrue, CyFalse);
-                    break;
-            }
-
-            if (sendData)
-            {
-                /* Send the 8-byte PAN and TILT values back to the USB host. */
-                glEp0Buffer[0] = CY_U3P_DWORD_GET_BYTE0 (panVal);
-                glEp0Buffer[1] = CY_U3P_DWORD_GET_BYTE1 (panVal);
-                glEp0Buffer[2] = CY_U3P_DWORD_GET_BYTE2 (panVal);
-                glEp0Buffer[3] = CY_U3P_DWORD_GET_BYTE3 (panVal);
-                glEp0Buffer[4] = CY_U3P_DWORD_GET_BYTE0 (tiltVal);
-                glEp0Buffer[5] = CY_U3P_DWORD_GET_BYTE1 (tiltVal);
-                glEp0Buffer[6] = CY_U3P_DWORD_GET_BYTE2 (tiltVal);
-                glEp0Buffer[7] = CY_U3P_DWORD_GET_BYTE3 (tiltVal);
-                CyU3PUsbSendEP0Data (wLength, (uint8_t *)glEp0Buffer);
-            }
-            break;
-#endif
-
-        default:
-            CyU3PUsbStall (0, CyTrue, CyFalse);
-            break;
-    }
+	CyU3PUsbStall (0, CyTrue, CyFalse);
 }
 
 /*

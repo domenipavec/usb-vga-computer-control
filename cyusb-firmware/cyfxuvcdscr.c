@@ -26,7 +26,6 @@
  */
 
 #include "uvc.h"
-#include "camera_ptzcontrol.h"
 
 /* Standard Device Descriptor */
 const uint8_t CyFxUSBDeviceDscr[] =
@@ -148,18 +147,9 @@ const uint8_t CyFxUSBHSConfigDscr[] =
         0x01,0x02,                      /* Camera terminal type */
         0x00,                           /* No association terminal */
         0x00,                           /* String desc index : Not used */
-#ifdef UVC_PTZ_SUPPORT
-        (uint8_t)(wObjectiveFocalLengthMin&0xFF),
-        (uint8_t)((wObjectiveFocalLengthMin>>8)&0xFF),
-        (uint8_t)(wObjectiveFocalLengthMax&0xFF),
-        (uint8_t)((wObjectiveFocalLengthMax>>8)&0xFF),
-        (uint8_t)(wOcularFocalLength&0xFF),
-        (uint8_t)((wOcularFocalLength>>8)&0xFF),
-#else
         0x00,0x00,                      /* No optical zoom supported */
         0x00,0x00,                      /* No optical zoom supported */
         0x00,0x00,                      /* No optical zoom supported */
-#endif
         0x03,                           /* Size of controls field for this terminal : 3 bytes */
                                         /* A bit set to 1 indicates that the mentioned Control is
                                          * supported for the video stream in the bmControls field
@@ -187,11 +177,7 @@ const uint8_t CyFxUSBHSConfigDscr[] =
                                          * D21: Region of Interest
                                          * D22 � D23: Reserved, set to zero
                                          */
-#ifdef UVC_PTZ_SUPPORT
-        0x00,0x0A,0x00,                 /* bmControls field of camera terminal: PTZ supported */
-#else
         0x00,0x00,0x00,                 /* bmControls field of camera terminal: No controls supported */
-#endif
 
         /* Processing Unit Descriptor */
         0x0C,                           /* Descriptor size */
@@ -431,18 +417,9 @@ const uint8_t CyFxUSBSSConfigDscr[] =
         0x01,0x02,                      /* Camera terminal type */
         0x00,                           /* No association terminal */
         0x00,                           /* String desc index : Not used */
-#ifdef UVC_PTZ_SUPPORT
-        (uint8_t)(wObjectiveFocalLengthMin&0xFF),
-        (uint8_t)((wObjectiveFocalLengthMin>>8)&0xFF),
-        (uint8_t)(wObjectiveFocalLengthMax&0xFF),
-        (uint8_t)((wObjectiveFocalLengthMax>>8)&0xFF),
-        (uint8_t)(wOcularFocalLength&0xFF),
-        (uint8_t)((wOcularFocalLength>>8)&0xFF),
-#else
         0x00,0x00,                      /* No optical zoom supported */
         0x00,0x00,                      /* No optical zoom supported */
         0x00,0x00,                      /* No optical zoom supported */
-#endif
         0x03,                           /* Size of controls field for this terminal : 3 bytes */
                                         /* A bit set to 1 in the bmControls field indicates that
                                          * the mentioned Control is supported for the video stream.
@@ -470,11 +447,7 @@ const uint8_t CyFxUSBSSConfigDscr[] =
                                          * D21: Region of Interest
                                          * D22 � D23: Reserved, set to zero
                                          */
-#ifdef UVC_PTZ_SUPPORT
-        0x00,0x0A,0x00,                 /* bmControls field of camera terminal: PTZ supported */
-#else
         0x00,0x00,0x00,                 /* bmControls field of camera terminal: No controls supported */
-#endif
 
         /* Processing Unit Descriptor */
         0x0C,                           /* Descriptor size */
