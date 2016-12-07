@@ -92,12 +92,6 @@ CyBool_t        streamingStarted = CyFalse;             /* Whether USB host has 
 uint8_t back_flow_detected = 0;                         /* Whether buffer overflow error is detected. */
 #endif
 
-#ifdef USB_DEBUG_INTERFACE
-CyU3PDmaChannel  glDebugCmdChannel;                     /* Channel to receive debug commands on. */
-CyU3PDmaChannel  glDebugRspChannel;                     /* Channel to send debug responses on. */
-uint8_t         *glDebugRspBuffer;                      /* Buffer used to send debug responses. */
-#endif
-
 /* UVC Probe Control Settings for a USB 3.0 connection. */
 uint8_t glProbeCtrl[CY_FX_UVC_MAX_PROBE_SETTING] = {
     0x00, 0x00,                 /* bmHint : no hit */
@@ -592,21 +586,6 @@ static void CyFxUvcAppPibCallback (
 }
 #endif
 
-#ifdef USB_DEBUG_INTERFACE
-static void
-CyFxUvcAppDebugCallback (
-        CyU3PDmaChannel   *handle,
-        CyU3PDmaCbType_t   type,
-        CyU3PDmaCBInput_t *input)
-{
-    if (type == CY_U3P_DMA_CB_PROD_EVENT)
-    {
-        /* Data has been received. Notify the EP0 thread which handles the debug commands as well. */
-        CyU3PEventSet (&glFxUVCEvent, CY_FX_USB_DEBUG_CMD_EVENT, CYU3P_EVENT_OR);
-    }
-}
-#endif
-
 /*
  * Load the GPIF configuration on the GPIF-II engine. This operation is performed at start-up.
  */
@@ -637,10 +616,6 @@ CyFxUVCApplnInit (void)
     CyU3PGpioClock_t             gpioClock;
     CyU3PGpioSimpleConfig_t      gpioConfig;
     CyU3PPibClock_t              pibclock;
-
-#ifdef USB_DEBUG_INTERFACE
-    CyU3PDmaChannelConfig_t channelConfig;
-#endif
 
     /* Create UVC event group */
     apiRetStatus = CyU3PEventCreate (&glFxUVCEvent);
@@ -831,89 +806,6 @@ CyFxUVCApplnInit (void)
         CyU3PDebugPrint (4, "DMA Channel Creation Failed, Error Code = %d\n", apiRetStatus);
         CyFxAppErrorHandler (apiRetStatus);
     }
-
-#ifdef USB_DEBUG_INTERFACE
-    /* Configure the endpoints and create DMA channels used by the USB debug interface.
-       The command (OUT) endpoint is configured in packet mode and enabled to receive data.
-       Once the CY_U3P_DMA_CB_PROD_EVENT callback is received, the received data packet is
-       processed and the data is returned through the CyU3PDmaChannelSetupSendBuffer API call.
-     */
-
-    endPointConfig.enable   = 1;
-    endPointConfig.epType   = CY_U3P_USB_EP_BULK;
-    endPointConfig.pcktSize = 1024;                     /* Use SuperSpeed settings here. */
-    endPointConfig.isoPkts  = 0;
-    endPointConfig.streams  = 0;
-    endPointConfig.burstLen = 1;
-
-    apiRetStatus = CyU3PSetEpConfig (CY_FX_EP_DEBUG_CMD, &endPointConfig);
-    if (apiRetStatus != CY_U3P_SUCCESS)
-    {
-        CyU3PDebugPrint (4, "Debug Command endpoint config failed, Error code = %d\n", apiRetStatus);
-        CyFxAppErrorHandler (apiRetStatus);
-    }
-
-    CyU3PUsbSetEpPktMode (CY_FX_EP_DEBUG_CMD, CyTrue);
-
-    apiRetStatus = CyU3PSetEpConfig (CY_FX_EP_DEBUG_RSP, &endPointConfig);
-    if (apiRetStatus != CY_U3P_SUCCESS)
-    {
-        CyU3PDebugPrint (4, "Debug Response endpoint config failed, Error code = %d\n", apiRetStatus);
-        CyFxAppErrorHandler (apiRetStatus);
-    }
-
-    channelConfig.size           = 1024;
-    channelConfig.count          = 1;
-    channelConfig.prodSckId      = CY_U3P_UIB_SOCKET_PROD_0 | CY_FX_EP_DEBUG_CMD_SOCKET;
-    channelConfig.consSckId      = CY_U3P_CPU_SOCKET_CONS;
-    channelConfig.prodAvailCount = 0;
-    channelConfig.prodHeader     = 0;
-    channelConfig.prodFooter     = 0;
-    channelConfig.consHeader     = 0;
-    channelConfig.dmaMode        = CY_U3P_DMA_MODE_BYTE;
-    channelConfig.notification   = CY_U3P_DMA_CB_PROD_EVENT;
-    channelConfig.cb             = CyFxUvcAppDebugCallback;
-
-    apiRetStatus = CyU3PDmaChannelCreate (&glDebugCmdChannel, CY_U3P_DMA_TYPE_MANUAL_IN, &channelConfig);
-    if (apiRetStatus != CY_U3P_SUCCESS)
-    {
-        CyU3PDebugPrint (4, "Debug Command channel create failed, Error code = %d\n", apiRetStatus);
-        CyFxAppErrorHandler (apiRetStatus);
-    }
-
-    apiRetStatus = CyU3PDmaChannelSetXfer (&glDebugCmdChannel, 0);
-    if (apiRetStatus != CY_U3P_SUCCESS)
-    {
-        CyU3PDebugPrint (4, "Debug channel SetXfer failed, Error code = %d\n", apiRetStatus);
-        CyFxAppErrorHandler (apiRetStatus);
-    }
-
-    channelConfig.size           = 1024;
-    channelConfig.count          = 0;           /* No buffers allocated. We will only use the SetupSend API. */
-    channelConfig.prodSckId      = CY_U3P_CPU_SOCKET_PROD;
-    channelConfig.consSckId      = CY_U3P_UIB_SOCKET_CONS_0 | CY_FX_EP_DEBUG_RSP_SOCKET;
-    channelConfig.prodAvailCount = 0;
-    channelConfig.prodHeader     = 0;
-    channelConfig.prodFooter     = 0;
-    channelConfig.consHeader     = 0;
-    channelConfig.dmaMode        = CY_U3P_DMA_MODE_BYTE;
-    channelConfig.notification   = 0;
-    channelConfig.cb             = 0;
-
-    apiRetStatus = CyU3PDmaChannelCreate (&glDebugRspChannel, CY_U3P_DMA_TYPE_MANUAL_OUT, &channelConfig);
-    if (apiRetStatus != CY_U3P_SUCCESS)
-    {
-        CyU3PDebugPrint (4, "Debug Response channel create failed, Error code = %d\n", apiRetStatus);
-        CyFxAppErrorHandler (apiRetStatus);
-    }
-
-    glDebugRspBuffer = (uint8_t *)CyU3PDmaBufferAlloc (1024);
-    if (glDebugRspBuffer == 0)
-    {
-        CyU3PDebugPrint (4, "Failed to allocate memory for debug buffer\r\n");
-        CyFxAppErrorHandler (CY_U3P_ERROR_MEMORY_ERROR);
-    }
-#endif
 
     /* Enable USB connection from the FX3 device, preferably at USB 3.0 speed. */
     apiRetStatus = CyU3PConnectState (CyTrue, CyTrue);
@@ -1409,13 +1301,6 @@ UVCAppEP0Thread_Entry (
     uint32_t eventMask = (CY_FX_UVC_VIDEO_CONTROL_REQUEST_EVENT | CY_FX_UVC_VIDEO_STREAM_REQUEST_EVENT);
     uint32_t eventFlag;
 
-#ifdef USB_DEBUG_INTERFACE
-    CyU3PReturnStatus_t apiRetStatus;
-    CyU3PDmaBuffer_t    dmaInfo;
-
-    eventMask |= CY_FX_USB_DEBUG_CMD_EVENT;
-#endif
-
     for (;;)
     {
         /* Wait for a Video control or streaming related request on the control endpoint. */
@@ -1462,90 +1347,6 @@ UVCAppEP0Thread_Entry (
                     UVCHandleVideoStreamingRqts ();
                 }
             }
-
-#ifdef USB_DEBUG_INTERFACE
-            if (eventFlag & CY_FX_USB_DEBUG_CMD_EVENT)
-            {
-                /* Get the command buffer */
-                apiRetStatus = CyU3PDmaChannelGetBuffer (&glDebugCmdChannel, &dmaInfo, CYU3P_WAIT_FOREVER);
-                if (apiRetStatus != CY_U3P_SUCCESS)
-                {
-                    CyU3PDebugPrint (4, "Failed to receive debug command, Error code = %d\r\n", apiRetStatus);
-                    CyFxAppErrorHandler (apiRetStatus);
-                }
-
-                /* Decode the command from the command buffer, error checking is not implemented,
-                 * so the command is expected to be correctly sent from the host application. First byte indicates
-                 * read (0x00) or write (0x01) command. Second and third bytes are register address high byte and
-                 * register address low byte. For read commands the fourth byte (optional) can be N>0, to read N
-                 * registers in sequence. Response first byte is status (0=Pass, !0=Fail) followed by N pairs of
-                 * register value high byte and register value low byte.
-                 */
-                if (dmaInfo.buffer[0] == 0)
-                {
-                    if (dmaInfo.count == 3)
-                    {
-                        glDebugRspBuffer[0] = SensorRead2B (SENSOR_ADDR_RD, dmaInfo.buffer[1], dmaInfo.buffer[2],
-                        		(glDebugRspBuffer+1));
-                        dmaInfo.count = 3;
-                    }
-                    else if (dmaInfo.count == 4)
-                    {
-                        if (dmaInfo.buffer[3] > 0)
-                        {
-                                glDebugRspBuffer[0] = SensorRead (SENSOR_ADDR_RD, dmaInfo.buffer[1], dmaInfo.buffer[2],
-                                		(dmaInfo.buffer[3]*2), (glDebugRspBuffer+1));
-                        }
-                        dmaInfo.count = dmaInfo.buffer[3]*2+1;
-                    }
-                }
-                /*  For write commands, the register address is followed by N pairs (N>0) of register value high byte
-                 *  and register value low byte to write in sequence. Response first byte is status (0=Pass, !0=Fail)
-                 *  followed by N pairs of register value high byte and register value low byte after modification.
-                 */
-                else if (dmaInfo.buffer[0] == 1)
-                {
-                        glDebugRspBuffer[0] = SensorWrite (SENSOR_ADDR_WR, dmaInfo.buffer[1], dmaInfo.buffer[2],
-                        		(dmaInfo.count-3), (dmaInfo.buffer+3));
-                        if (glDebugRspBuffer[0] != CY_U3P_SUCCESS)
-                        	break;
-                        glDebugRspBuffer[0] = SensorRead (SENSOR_ADDR_RD, dmaInfo.buffer[1], dmaInfo.buffer[2],
-                        		(dmaInfo.count-3), (glDebugRspBuffer+1));
-                        if (glDebugRspBuffer[0] != CY_U3P_SUCCESS)
-                        	break;
-                    dmaInfo.count -= 2;
-                }
-                /* Default case, prepare buffer for loop back command in response */
-                else
-                {
-                   /* For now, we just copy the command into the response buffer; and send it back to the
-                      USB host. This can be expanded to include I2C transfers. */
-                    CyU3PMemCopy (glDebugRspBuffer, dmaInfo.buffer, dmaInfo.count);
-                }
-
-                dmaInfo.buffer = glDebugRspBuffer;
-                dmaInfo.size   = 1024;
-                dmaInfo.status = 0;
-
-                /* Free the command buffer to receive the next command. */
-                apiRetStatus = CyU3PDmaChannelDiscardBuffer (&glDebugCmdChannel);
-                if (apiRetStatus != CY_U3P_SUCCESS)
-                {
-                    CyU3PDebugPrint (4, "Failed to free up command OUT EP buffer, Error code = %d\r\n", apiRetStatus);
-                    CyFxAppErrorHandler (apiRetStatus);
-                }
-
-                /* Wait until the response has gone out. */
-                CyU3PDmaChannelWaitForCompletion (&glDebugRspChannel, CYU3P_WAIT_FOREVER);
-
-                apiRetStatus = CyU3PDmaChannelSetupSendBuffer (&glDebugRspChannel, &dmaInfo);
-                if (apiRetStatus != CY_U3P_SUCCESS)
-                {
-                    CyU3PDebugPrint (4, "Failed to send debug response, Error code = %d\r\n", apiRetStatus);
-                    CyFxAppErrorHandler (apiRetStatus);
-                }
-            }
-#endif
         }
 
         /* Allow other ready threads to run. */

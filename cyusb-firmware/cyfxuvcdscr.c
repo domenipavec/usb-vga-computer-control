@@ -102,13 +102,8 @@ const uint8_t CyFxUSBHSConfigDscr[] =
         /* Configuration Descriptor Type */
         0x09,                           /* Descriptor Size */
         CY_U3P_USB_CONFIG_DESCR,        /* Configuration Descriptor Type */
-#ifdef USB_DEBUG_INTERFACE
-        0xE4,0x00,                      /* Length of this descriptor and all sub descriptors */
-        0x03,                           /* Number of interfaces */
-#else
         0xCD,0x00,                      /* Length of this descriptor and all sub descriptors */
         0x02,                           /* Number of interfaces */
-#endif
         0x01,                           /* Configuration number */
         0x00,                           /* COnfiguration string index */
         0x80,                           /* Config characteristics - Bus powered */
@@ -344,35 +339,6 @@ const uint8_t CyFxUSBHSConfigDscr[] =
         (uint8_t)(512 & 0x00FF),        /* High speed max packet size is always 512 bytes. */
         (uint8_t)((512 & 0xFF00)>>8),
         0x01                            /* Servicing interval for data transfers */
-
-#ifdef USB_DEBUG_INTERFACE
-        ,
-        0x09,                           /* Descriptor size */
-        CY_U3P_USB_INTRFC_DESCR,        /* Interface Descriptor type */
-        0x02,                           /* Interface number */
-        0x00,                           /* Alternate setting number */
-        0x02,                           /* Number of end points */
-        0xFF,                           /* Interface class */
-        0x00,                           /* Interface sub class */
-        0x00,                           /* Interface protocol code */
-        0x00,                           /* Interface descriptor string index */
-
-        /* Endpoint descriptor for producer EP */
-        0x07,                           /* Descriptor size */
-        CY_U3P_USB_ENDPNT_DESCR,        /* Endpoint descriptor type */
-        CY_FX_EP_DEBUG_CMD,             /* Endpoint address and description */
-        CY_U3P_USB_EP_BULK,             /* Bulk endpoint type */
-        0x00,0x02,                      /* Max packet size = 512 bytes */
-        0x00,                           /* Servicing interval for data transfers : 0 for bulk */
-    
-        /* Endpoint descriptor for consumer EP */
-        0x07,                           /* Descriptor size */
-        CY_U3P_USB_ENDPNT_DESCR,        /* Endpoint descriptor type */
-        CY_FX_EP_DEBUG_RSP,             /* Endpoint address and description */
-        CY_U3P_USB_EP_BULK,             /* Bulk endpoint type */
-        0x00,0x02,                      /* Max packet size = 512 bytes */
-        0x00                            /* Servicing interval for data transfers : 0 for Bulk */
-#endif
     };
 
 /* BOS for SS */
@@ -419,13 +385,8 @@ const uint8_t CyFxUSBSSConfigDscr[] =
         /* Configuration Descriptor Type */
         0x09,                           /* Descriptor Size */
         CY_U3P_USB_CONFIG_DESCR,        /* Configuration Descriptor Type */
-#ifdef USB_DEBUG_INTERFACE
-        0xFC,0x00,                      /* Total length of this and all sub-descriptors. */
-        0x03,                           /* Number of interfaces */
-#else
         0xD9,0x00,                      /* Length of this descriptor and all sub descriptors */
         0x02,                           /* Number of interfaces */
-#endif
         0x01,                           /* Configuration number */
         0x00,                           /* Configuration string index */
         0x80,                           /* Config characteristics - Bus powered */
@@ -673,49 +634,6 @@ const uint8_t CyFxUSBSSConfigDscr[] =
         0x00,                           /* Attribute: Streams not defined */
         0x00,                           /* No meaning for bulk */
         0x00
-
-#ifdef USB_DEBUG_INTERFACE
-        ,
-        0x09,                           /* Descriptor size */
-        CY_U3P_USB_INTRFC_DESCR,        /* Interface Descriptor type */
-        0x02,                           /* Interface number */
-        0x00,                           /* Alternate setting number */
-        0x02,                           /* Number of end points */
-        0xFF,                           /* Interface class */
-        0x00,                           /* Interface sub class */
-        0x00,                           /* Interface protocol code */
-        0x00,                           /* Interface descriptor string index */
-
-        /* Endpoint descriptor for producer EP */
-        0x07,                           /* Descriptor size */
-        CY_U3P_USB_ENDPNT_DESCR,        /* Endpoint descriptor type */
-        CY_FX_EP_DEBUG_CMD,             /* Endpoint address and description */
-        CY_U3P_USB_EP_BULK,             /* Bulk endpoint type */
-        0x00,0x04,                      /* Max packet size = 1024 bytes */
-        0x00,                           /* Servicing interval for data transfers : 0 for bulk */
-    
-        /* Super speed endpoint companion descriptor for producer EP */
-        0x06,                           /* Descriptor size */
-        CY_U3P_SS_EP_COMPN_DESCR,       /* SS endpoint companion descriptor type */
-        0,                              /* No burst support. */
-        0x00,                           /* Max streams for bulk EP = 0 (No streams) */
-        0x00,0x00,                      /* Service interval for the EP : 0 for bulk */
-    
-        /* Endpoint descriptor for consumer EP */
-        0x07,                           /* Descriptor size */
-        CY_U3P_USB_ENDPNT_DESCR,        /* Endpoint descriptor type */
-        CY_FX_EP_DEBUG_RSP,             /* Endpoint address and description */
-        CY_U3P_USB_EP_BULK,             /* Bulk endpoint type */
-        0x00,0x04,                      /* Max packet size = 1024 bytes */
-        0x00,                           /* Servicing interval for data transfers : 0 for Bulk */
-    
-        /* Super speed endpoint companion descriptor for consumer EP */
-        0x06,                           /* Descriptor size */
-        CY_U3P_SS_EP_COMPN_DESCR,       /* SS endpoint companion descriptor type */
-        0,                              /* No burst support. */
-        0x00,                           /* Max streams for bulk EP = 0 (No streams) */
-        0x00,0x00                       /* Service interval for the EP : 0 for bulk */
-#endif
     };
 
 

@@ -33,7 +33,6 @@
 /* #define UVC_PTZ_SUPPORT */           /* Enable if Pan, Tilt and Zoom controls are to be implemented. */
 /* #define BACKFLOW_DETECT */           /* Enable if buffer overflow conditions are to be detected. */
 #define DEBUG_PRINT_FRAME_COUNT   /* Enable UART debug prints to print the frame count every end of frame */
-/* #define USB_DEBUG_INTERFACE */       /* Enable custom USB interface for sensor interface debugging. */
 
 /* UVC application thread parameters. */
 #define UVC_APP_THREAD_STACK           (0x1000) /* Stack size for the video streaming thread is 4 KB. */
@@ -50,14 +49,6 @@
 #define CY_FX_EP_IN_TYPE                0x80    /* USB IN end points have MSB set */
 #define CY_FX_EP_BULK_VIDEO             (CY_FX_EP_VIDEO_CONS_SOCKET | CY_FX_EP_IN_TYPE)         /* EP 3 IN */
 #define CY_FX_EP_CONTROL_STATUS         (CY_FX_EP_CONTROL_STATUS_SOCKET | CY_FX_EP_IN_TYPE)     /* EP 2 IN */
-
-#ifdef USB_DEBUG_INTERFACE
-/* Socket and endpoint definitions for the USB debug interface. */
-#define CY_FX_EP_DEBUG_CMD_SOCKET       0x04    /* USB Producer socket 4 is used as the debug command pipe. */
-#define CY_FX_EP_DEBUG_RSP_SOCKET       0x04    /* USB Consumer socket 4 is used as the debug response pipe. */
-#define CY_FX_EP_DEBUG_CMD              (CY_FX_EP_DEBUG_CMD_SOCKET)                             /* EP 4 OUT */
-#define CY_FX_EP_DEBUG_RSP              (CY_FX_EP_DEBUG_RSP_SOCKET | CY_FX_EP_IN_TYPE)          /* EP 4 IN */
-#endif
 
 /* UVC Video Streaming Endpoint Packet Size */
 #define CY_FX_EP_BULK_VIDEO_PKT_SIZE    (0x400)         /* 1024 Bytes */
@@ -106,13 +97,6 @@
    as soon as serviced by the firmware.
  */
 #define CY_FX_UVC_VIDEO_STREAM_REQUEST_EVENT    (1 << 3)
-
-#ifdef USB_DEBUG_INTERFACE
-/* USB Debug Command event. This event flag indicates that a USB debug command has been
-   received on the command endpoint.
- */
-#define CY_FX_USB_DEBUG_CMD_EVENT               (1 << 4)
-#endif
 
 /*
    The following constants are taken from the USB and USB Video Class (UVC) specifications.
