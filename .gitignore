@@ -19,3 +19,23 @@ _autosave-*
 *.xml
 *.csv
 
+ c++ and c
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# output files
+*.elf
+*.map
+
+Debug
