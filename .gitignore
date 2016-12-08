@@ -16,10 +16,10 @@ _autosave-*
 .dsn
 
 # Exported BOM files
-*.xml
+# *.xml
 *.csv
 
- c++ and c
+# c++ and c
 # Compiled Object files
 *.slo
 *.lo
