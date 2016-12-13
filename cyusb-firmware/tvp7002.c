@@ -68,11 +68,21 @@ CyU3PReturnStatus_t tvp7002_init() {
 		return apiRetStatus;
 	}
 	I2C_WRITE(TVP7002_ADDRESS, 0x03, 0x18);
-	//I2C_WRITE(TVP7002_ADDRESS, 0x04, 0x00);
+	I2C_WRITE(TVP7002_ADDRESS, 0x04, 0x00);
 
 	// clamp settings recommended for pc graphics
 	I2C_WRITE(TVP7002_ADDRESS, 0x05, 0x06);
 	I2C_WRITE(TVP7002_ADDRESS, 0x06, 0x10);
+
+	// set gains and offsets from example settings
+	// BGR gain
+	I2C_WRITE(TVP7002_ADDRESS, 0x08, 0x04);
+	I2C_WRITE(TVP7002_ADDRESS, 0x09, 0x04);
+	I2C_WRITE(TVP7002_ADDRESS, 0x0a, 0x04);
+	// BGR offsets
+	I2C_WRITE(TVP7002_ADDRESS, 0x0b, 0x90);
+	I2C_WRITE(TVP7002_ADDRESS, 0x0c, 0x90);
+	I2C_WRITE(TVP7002_ADDRESS, 0x0d, 0x90);
 
 	// Some sync input settings
 	I2C_WRITE(TVP7002_ADDRESS, 0x0e, 0x12);
@@ -93,6 +103,12 @@ CyU3PReturnStatus_t tvp7002_init() {
 	// outputs enabled
 	I2C_WRITE(TVP7002_ADDRESS, 0x17, 0x00);
 
+	// enable csc
+	I2C_WRITE(TVP7002_ADDRESS, 0x18, 0x10);
+
+	// input selection
+	I2C_WRITE(TVP7002_ADDRESS, 0x19, 0x00);
+
 	// hsout start in clock cycles
 	I2C_WRITE(TVP7002_ADDRESS, 0x21, 0x0d);
 
@@ -102,11 +118,17 @@ CyU3PReturnStatus_t tvp7002_init() {
 	// disable macrovision stripper
 	I2C_WRITE(TVP7002_ADDRESS, 0x22, 0x00);
 
+	// enable CM offset
+	I2C_WRITE(TVP7002_ADDRESS, 0x2a, 0x87);
+
 	// ALC placement for pc graphics
 	I2C_WRITE(TVP7002_ADDRESS, 0x31, 0x18);
 
 	// vs-hs align
 	I2C_WRITE(TVP7002_ADDRESS, 0x35, -1);
+
+	// set recommended line length tolerance
+	I2C_WRITE(TVP7002_ADDRESS, 0x3d, 0x06);
 
 	return apiRetStatus;
 }

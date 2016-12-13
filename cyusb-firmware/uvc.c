@@ -147,6 +147,8 @@ uint8_t volatile glUVCHeader[CY_FX_UVC_MAX_HEADER] =
 #ifdef DEBUG_PRINT_FRAME_COUNT
 volatile static uint32_t glFrameCount = 0;              /* Number of video frames transferred so far. */
 volatile static uint32_t glDmaDone = 1;                 /* Number of buffers transferred in the current frame. */
+volatile static uint32_t glForceWrap = 0;
+volatile static uint32_t glEndFull = 0;
 #endif
 
 /* Add the UVC packet header to the top of the specified DMA buffer. */
@@ -472,14 +474,26 @@ CyFxGpifCB (
     switch (currentState)
     {
         case PARTIAL_BUF_IN_SCK0:
+#ifdef DEBUG_PRINT_FRAME_COUNT
+			glForceWrap++;
+#endif /* DEBUG_PRINT_FRAME_COUNT */
             CyU3PDmaSocketSetWrapUp (CY_U3P_PIB_SOCKET_0);
             break;
         case FULL_BUF_IN_SCK0:
+#ifdef DEBUG_PRINT_FRAME_COUNT
+			glEndFull++;
+#endif /* DEBUG_PRINT_FRAME_COUNT */
             break;
         case PARTIAL_BUF_IN_SCK1:
+#ifdef DEBUG_PRINT_FRAME_COUNT
+			glForceWrap++;
+#endif /* DEBUG_PRINT_FRAME_COUNT */
             CyU3PDmaSocketSetWrapUp (CY_U3P_PIB_SOCKET_1);
             break;
         case FULL_BUF_IN_SCK1:
+#ifdef DEBUG_PRINT_FRAME_COUNT
+			glEndFull++;
+#endif /* DEBUG_PRINT_FRAME_COUNT */
             break;
 
         default:
@@ -866,6 +880,8 @@ UVCAppThread_Entry (
                 /* Clear state variables. */
                 glDmaDone    = 1;
                 glFrameCount = 0;
+                glForceWrap = 0;
+                glEndFull = 0;
 #endif /* DEBUG_PRINT_FRAME_COUNT */
 
                 /* Start with frame ID 0. */
@@ -909,6 +925,8 @@ UVCAppThread_Entry (
                 /* Clear state variables. */
                 glDmaDone    = 1;
                 glFrameCount = 0;
+                glForceWrap = 0;
+                glEndFull = 0;
 #endif /* DEBUG_PRINT_FRAME_COUNT */
 
                 if (!clearFeatureRqtReceived)
@@ -933,6 +951,7 @@ UVCAppThread_Entry (
 #ifdef DEBUG_PRINT_FRAME_COUNT
         CyU3PDebugPrint (4, "UVC: Completed %d frames and %d buffers\r\n", glFrameCount,
                 (glDmaDone != 0) ? (glDmaDone - 1) : 0);
+        CyU3PDebugPrint (4, "Force wrapped %d, full end %d buffers.\r\n", glForceWrap, glEndFull);
 #endif
     }
 }
