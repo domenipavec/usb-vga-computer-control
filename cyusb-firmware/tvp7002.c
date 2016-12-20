@@ -121,6 +121,9 @@ CyU3PReturnStatus_t tvp7002_init() {
 	// enable CM offset
 	I2C_WRITE(TVP7002_ADDRESS, 0x2a, 0x87);
 
+	// power control everything on
+	I2C_WRITE(TVP7002_ADDRESS, 0x2b, 0x00);
+
 	// ALC placement for pc graphics
 	I2C_WRITE(TVP7002_ADDRESS, 0x31, 0x18);
 
