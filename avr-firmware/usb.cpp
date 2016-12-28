@@ -25,6 +25,7 @@
  */
 
 #include "usb.h"
+#include "uart.h"
 
 #include <avr/pgmspace.h>
 #include <util/delay.h>
@@ -109,7 +110,8 @@ void usb_init() {
 void usb_loop() {
 	usbPoll();
 	if (usbInterruptIsReady()) {
-		reportBuffer.dx = 5;
+		reportBuffer.dx = dx;
+		dx = 0;
 		usbSetInterrupt((uint8_t *)&reportBuffer, sizeof(reportBuffer));
 	}
 }

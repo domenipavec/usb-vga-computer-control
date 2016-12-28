@@ -24,22 +24,15 @@
  * SOFTWARE.
  */
 
-#ifndef USB_H
-#define USB_H
+#ifndef UART_H
+#define UARt_H
 
-#ifdef __cplusplus
-#define EXTERNC extern "C"
-#else
-#define EXTERNC
-#endif
+#include <stdint.h>
 
-EXTERNC {
-#include "usbdrv.h"
-}
+#define BAUDRATE 19200
 
-EXTERNC usbMsgLen_t usbFunctionSetup(uchar data[8]);
+void uart_init();
 
-void usb_init();
-void usb_loop();
+extern volatile int8_t dx;
 
 #endif

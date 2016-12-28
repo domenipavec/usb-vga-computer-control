@@ -35,10 +35,12 @@
 // #include <stdlib.h>
 
 #include "usb.h"
+#include "uart.h"
 
 
 int main() {
 	usb_init();
+	uart_init();
 
 	// enable interrupts
 	sei();

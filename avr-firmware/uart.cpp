@@ -1,5 +1,5 @@
-/* File: usb.h
- * Usb handling
+/* File: uart.cpp
+ * uart handling
  */
 /* Copyright (c) 2012-2013 Domen Ipavec (domen.ipavec@z-v.si)
  *
@@ -24,22 +24,37 @@
  * SOFTWARE.
  */
 
-#ifndef USB_H
-#define USB_H
+#include "uart.h"
 
-#ifdef __cplusplus
-#define EXTERNC extern "C"
-#else
-#define EXTERNC
-#endif
+#include <avr/interrupt.h>
 
-EXTERNC {
-#include "usbdrv.h"
+
+#include "bitop.h"
+
+volatile int8_t dx;
+
+void uart_init() {
+	// remap to PB2 and PA7
+	SETBIT(REMAP, U0MAP);
+
+	// enable rx complete interrupt
+	SETBIT(UCSR0B, RXCIE0);
+
+	// enable receiver
+	SETBIT(UCSR0B, RXEN0);
+
+	// set 8 bits byte mode
+	SETBITS(UCSR0C, BIT(UCSZ00) | BIT(UCSZ01));
+
+	// set baud rate
+	UBRR0 = F_CPU/16/BAUDRATE - 1;
 }
 
-EXTERNC usbMsgLen_t usbFunctionSetup(uchar data[8]);
-
-void usb_init();
-void usb_loop();
-
-#endif
+ISR(USART0_RX_vect) {
+	uint8_t data = UDR0;
+	if (data == 'a') {
+		dx = 5;
+	} else if (data == 'b') {
+		dx = -5;
+	}
+}
