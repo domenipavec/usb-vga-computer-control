@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:prototype1-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -231,9 +232,11 @@ AVR_RXD
 Text GLabel 6200 3550 2    60   Input ~ 0
 AVR_TXD
 $Comp
-L USB_B P1
+L USB_B-RESCUE-prototype1 P1
 U 1 1 5839FABB
 P 8250 2950
+AR Path="/5839FABB" Ref="P1"  Part="1" 
+AR Path="/5839DEEE/5839FABB" Ref="P1"  Part="1" 
 F 0 "P1" H 8450 2750 50  0000 C CNN
 F 1 "USB_B" H 8200 3150 50  0000 C CNN
 F 2 "Connect:USB_B" V 8200 2850 50  0001 C CNN
