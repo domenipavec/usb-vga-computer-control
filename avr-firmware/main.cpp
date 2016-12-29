@@ -34,6 +34,7 @@
 // #include <stdint.h>
 // #include <stdlib.h>
 
+#include "i2c.h"
 #include "usb.h"
 #include "uart.h"
 
@@ -41,6 +42,7 @@
 int main() {
 	usb_init();
 	uart_init();
+	i2c_init();
 
 	// enable interrupts
 	sei();

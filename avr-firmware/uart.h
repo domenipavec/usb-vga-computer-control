@@ -25,7 +25,7 @@
  */
 
 #ifndef UART_H
-#define UARt_H
+#define UART_H
 
 #include <stdint.h>
 

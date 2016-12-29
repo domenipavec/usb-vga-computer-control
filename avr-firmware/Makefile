@@ -92,7 +92,7 @@ F_CPU = 12000000UL
 # (list all files to compile, e.g. 'a.c b.cpp as.S'):
 # Use .cc, .cpp or .C suffix for C++ files, use .S
 # (NOT .s !!!) for assembly source code files.
-PRJSRC=main.cpp uart.cpp usb.cpp usbdrv/usbdrv.c usbdrv/usbdrvasm.S
+PRJSRC=main.cpp uart.cpp i2c.cpp usb.cpp usbdrv/usbdrv.c usbdrv/usbdrvasm.S
 
 # additional includes (e.g. -I/path/to/mydir)
 INC=-I./usbdrv/

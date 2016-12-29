@@ -1,5 +1,5 @@
-/* File: uart.cpp
- * uart handling
+/* File: usb.h
+ * Usb handling
  */
 /* Copyright (c) 2012-2013 Domen Ipavec (domen.ipavec@z-v.si)
  *
@@ -24,41 +24,9 @@
  * SOFTWARE.
  */
 
-#include "uart.h"
+#ifndef I2C_H
+#define I2C_H
 
-#include <avr/interrupt.h>
+void i2c_init();
 
-
-#include "bitop.h"
-
-volatile int8_t dx;
-
-void uart_init() {
-	// remap to PB2 and PA7
-	SETBIT(REMAP, U0MAP);
-
-	// enable rx complete interrupt
-	SETBIT(UCSR0B, RXCIE0);
-
-	// set 8 bits byte mode
-	SETBITS(UCSR0C, BIT(UCSZ00) | BIT(UCSZ01));
-
-	// set baud rate
-	UBRR0 = F_CPU/16/BAUDRATE - 1;
-
-	// enable receiver
-	SETBIT(UCSR0B, RXEN0);
-
-	// enable transmitter
-	SETBIT(UCSR0B, TXEN0);
-}
-
-ISR(USART0_RX_vect) {
-	uint8_t data = UDR0;
-	if (data == 'a') {
-		dx = 5;
-		UDR0 = 5;
-	} else if (data == 'b') {
-		dx = -5;
-	}
-}
+#endif
