@@ -37,5 +37,6 @@ _autosave-*
 # output files
 *.elf
 *.map
+*.img
 
 Debug

@@ -14,16 +14,15 @@
 ## installation root directory path.
 ##
 
-FX3FWROOT=../../cyfx3sdk
+FX3FWROOT=${HOME}/Cypress/cyfx3sdk
 
 all:compile
 
 include $(FX3FWROOT)/fw_build/fx3_fw/fx3_build_config.mak
 
-MODULE = cyfx_uvc_an75779
+MODULE = usb-vga-computer-control
 
 SOURCE= uvc.c 			\
-	camera_ptzcontrol.c	\
 	cyfxuvcdscr.c		\
 	i2c.c		\
 	tvp7002.c \
@@ -64,7 +63,9 @@ clean:
 	rm -f ./*.o
 	rm -f cyfxtx.c cyfx_startup.S cyfx_gcc_startup.S
 
+$(MODULE).img: $(EXES)
+	$(FX3FWROOT)/util/elf2img/elf2img -i $(EXES) -o $(MODULE).img -v
 
-compile: $(C_OBJECT) $(A_OBJECT) $(EXES)
+compile: $(C_OBJECT) $(A_OBJECT) $(EXES) $(MODULE).img
 
 #[]#
