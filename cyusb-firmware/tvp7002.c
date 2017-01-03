@@ -54,6 +54,29 @@ static CyU3PReturnStatus_t set_pll_divider(uint16_t clocks_per_line) {
 	return apiRetStatus;
 }
 
+static CyU3PReturnStatus_t set_hsout(uint8_t sync_pulse, uint8_t back_porch) {
+	const uint8_t TVP7002_YCBCR_LATENCY = 39; // constant
+	const uint8_t TVP7002_HSOUT_LATENCY = 5; // constant
+	const uint8_t TVP7002_HSOUT_WIDTH = 30;
+
+	CyU3PReturnStatus_t apiRetStatus = CY_U3P_SUCCESS;
+
+	// hsout start in clock cycles
+	I2C_WRITE(TVP7002_ADDRESS, 0x21,
+		TVP7002_YCBCR_LATENCY -
+		TVP7002_HSOUT_LATENCY -
+		TVP7002_HSOUT_WIDTH +
+		back_porch +
+		sync_pulse +
+		1
+	);
+
+	// hsout width in pixels
+	I2C_WRITE(TVP7002_ADDRESS, 0x07, TVP7002_HSOUT_WIDTH);
+
+	return apiRetStatus;
+}
+
 CyU3PReturnStatus_t tvp7002_init() {
 	CyU3PReturnStatus_t apiRetStatus = CY_U3P_SUCCESS;
 
@@ -69,6 +92,11 @@ CyU3PReturnStatus_t tvp7002_init() {
 	}
 	I2C_WRITE(TVP7002_ADDRESS, 0x03, 0x18);
 	I2C_WRITE(TVP7002_ADDRESS, 0x04, 0x00);
+
+	apiRetStatus = set_hsout(96, 48);
+	if (apiRetStatus != CY_U3P_SUCCESS) {
+		return apiRetStatus;
+	}
 
 	// clamp settings recommended for pc graphics
 	I2C_WRITE(TVP7002_ADDRESS, 0x05, 0x06);
@@ -108,12 +136,6 @@ CyU3PReturnStatus_t tvp7002_init() {
 
 	// input selection
 	I2C_WRITE(TVP7002_ADDRESS, 0x19, 0x00);
-
-	// hsout start in clock cycles
-	I2C_WRITE(TVP7002_ADDRESS, 0x21, 0x0d);
-
-	// hsout width in pixels
-	I2C_WRITE(TVP7002_ADDRESS, 0x07, 0xa0);
 
 	// disable macrovision stripper
 	I2C_WRITE(TVP7002_ADDRESS, 0x22, 0x00);
