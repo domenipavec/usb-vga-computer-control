@@ -471,6 +471,9 @@ CyFxGpifCB (
      * Note: DMA channel APIs cannot be used here as this is ISR context. We are making use of the raw socket
      * APIs.
      */
+
+	static uint8_t frame_lines_delay_count = 0;
+
     switch (currentState)
     {
         case PARTIAL_BUF_IN_SCK0:
@@ -496,10 +499,26 @@ CyFxGpifCB (
 #endif /* DEBUG_PRINT_FRAME_COUNT */
             break;
 
+		case PORCH_CPU1:
+			if (frame_lines_delay_count < 33 - 1) {
+				frame_lines_delay_count++;
+				return;
+			}
+			break;
+
+		case PORCH_CPU0:
+			if (frame_lines_delay_count < 33 - 1) {
+				frame_lines_delay_count++;
+				return;
+			}
+			break;
+
         default:
             /* This should not happen. Do nothing. */
             return;
     }
+
+	frame_lines_delay_count = 0;
 
     CyU3PGpifControlSWInput (CyTrue);
     CyU3PGpifControlSWInput (CyFalse);
@@ -859,7 +878,7 @@ UVCAppThread_Entry (
     /*
        The actual data forwarding from sensor to USB host is done from the DMA and GPIF callback
        functions. The thread is only responsible for checking for streaming start/stop conditions.
-      
+
        The CY_FX_UVC_STREAM_EVENT event flag will indicate that the UVC video stream should be started.
 
        The CY_FX_UVC_STREAM_ABORT_EVENT event indicates that we need to abort the video streaming. This

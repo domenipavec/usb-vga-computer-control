@@ -2,8 +2,8 @@
 <Root version="4">
   <CyStates>
     <CyNormalState>
-      <Left>107</Left>
-      <Top>121.446666666667</Top>
+      <Left>106</Left>
+      <Top>125.446666666667</Top>
       <Width>83</Width>
       <Height>70</Height>
       <Name>STATE0</Name>
@@ -13,8 +13,8 @@
       <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
     </CyNormalState>
     <CyNormalState>
-      <Left>275</Left>
-      <Top>120.41</Top>
+      <Left>215</Left>
+      <Top>19.41</Top>
       <Width>83</Width>
       <Height>70</Height>
       <Name>STATE1</Name>
@@ -24,8 +24,8 @@
       <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
     </CyNormalState>
     <CyNormalState>
-      <Left>1346</Left>
-      <Top>110.41</Top>
+      <Left>1436</Left>
+      <Top>182.41</Top>
       <Width>83</Width>
       <Height>70</Height>
       <Name>STATE3</Name>
@@ -35,8 +35,8 @@
       <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
     </CyNormalState>
     <CyNormalState>
-      <Left>1186</Left>
-      <Top>110.41</Top>
+      <Left>1350</Left>
+      <Top>30.41</Top>
       <Width>83</Width>
       <Height>70</Height>
       <Name>STATE4</Name>
@@ -189,8 +189,8 @@
       <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
     </CyNormalState>
     <CyNormalState>
-      <Left>439</Left>
-      <Top>121.41</Top>
+      <Left>246</Left>
+      <Top>154.41</Top>
       <Width>83</Width>
       <Height>70</Height>
       <Name>STATE2</Name>
@@ -211,8 +211,8 @@
       <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
     </CyNormalState>
     <CyNormalState>
-      <Left>968.615384615385</Left>
-      <Top>113.2425</Top>
+      <Left>1176.61538461539</Left>
+      <Top>151.2425</Top>
       <Width>83</Width>
       <Height>70</Height>
       <Name>STATE20</Name>
@@ -265,6 +265,94 @@
       <IsGroup>False</IsGroup>
       <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
     </CyNormalState>
+    <CyNormalState>
+      <Left>381</Left>
+      <Top>17</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE11</Name>
+      <DisplayName>PORCH_WAIT0</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>540</Left>
+      <Top>20.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE21</Name>
+      <DisplayName>PORCH_HSYNC0</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>723</Left>
+      <Top>19.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE26</Name>
+      <DisplayName>PORCH_CPU0</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>420</Left>
+      <Top>144.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE27</Name>
+      <DisplayName>PORCH_FW0</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>1179.61538461539</Left>
+      <Top>23.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE28</Name>
+      <DisplayName>PORCH_WAIT1</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>1023.61538461539</Left>
+      <Top>19.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE29</Name>
+      <DisplayName>PORCH_HSYNC1</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>845.615384615386</Left>
+      <Top>20.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE30</Name>
+      <DisplayName>PORCH_CPU1</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
+    <CyNormalState>
+      <Left>1006.61538461539</Left>
+      <Top>149.41</Top>
+      <Width>83</Width>
+      <Height>70</Height>
+      <Name>STATE31</Name>
+      <DisplayName>PORCH_FW1</DisplayName>
+      <zIndex>1</zIndex>
+      <IsGroup>False</IsGroup>
+      <ParentID>00000000-0000-0000-0000-000000000000</ParentID>
+    </CyNormalState>
     <CyStartState>
       <Left>29</Left>
       <Top>18.4466666666667</Top>
@@ -289,6 +377,138 @@
     </CyStartState>
   </CyStates>
   <CyTransitions>
+    <CyTransition>
+      <Name>TRANSITION44</Name>
+      <TransitionEquation>FW_TRG</TransitionEquation>
+      <SourceName>STATE30</SourceName>
+      <SinkName>STATE31</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION43</Name>
+      <TransitionEquation>!FW_TRG</TransitionEquation>
+      <SourceName>STATE31</SourceName>
+      <SinkName>STATE20</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION42</Name>
+      <TransitionEquation>!HSYNC</TransitionEquation>
+      <SourceName>STATE30</SourceName>
+      <SinkName>STATE29</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION41</Name>
+      <TransitionEquation>HSYNC</TransitionEquation>
+      <SourceName>STATE29</SourceName>
+      <SinkName>STATE30</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION40</Name>
+      <TransitionEquation>!HSYNC</TransitionEquation>
+      <SourceName>STATE28</SourceName>
+      <SinkName>STATE29</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION39</Name>
+      <TransitionEquation>VSYNC</TransitionEquation>
+      <SourceName>STATE4</SourceName>
+      <SinkName>STATE28</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION38</Name>
+      <TransitionEquation>!HSYNC</TransitionEquation>
+      <SourceName>STATE26</SourceName>
+      <SinkName>STATE21</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION37</Name>
+      <TransitionEquation>!FW_TRG</TransitionEquation>
+      <SourceName>STATE27</SourceName>
+      <SinkName>STATE2</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION35</Name>
+      <TransitionEquation>FW_TRG</TransitionEquation>
+      <SourceName>STATE26</SourceName>
+      <SinkName>STATE27</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION34</Name>
+      <TransitionEquation>HSYNC</TransitionEquation>
+      <SourceName>STATE21</SourceName>
+      <SinkName>STATE26</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION29</Name>
+      <TransitionEquation>!HSYNC</TransitionEquation>
+      <SourceName>STATE11</SourceName>
+      <SinkName>STATE21</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
+    <CyTransition>
+      <Name>TRANSITION2</Name>
+      <TransitionEquation>VSYNC</TransitionEquation>
+      <SourceName>STATE1</SourceName>
+      <SinkName>STATE11</SinkName>
+      <SourceConnectorName>Connector</SourceConnectorName>
+      <SinkConnectorName>Connector</SinkConnectorName>
+      <SourceArrowSymbol>None</SourceArrowSymbol>
+      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
+      <zIndex>0</zIndex>
+    </CyTransition>
     <CyTransition>
       <Name>TRANSITION27</Name>
       <TransitionEquation>HSYNC</TransitionEquation>
@@ -499,32 +719,10 @@
       <zIndex>0</zIndex>
     </CyTransition>
     <CyTransition>
-      <Name>TRANSITION30</Name>
-      <TransitionEquation>VSYNC</TransitionEquation>
-      <SourceName>STATE4</SourceName>
-      <SinkName>STATE20</SinkName>
-      <SourceConnectorName>Connector</SourceConnectorName>
-      <SinkConnectorName>Connector</SinkConnectorName>
-      <SourceArrowSymbol>None</SourceArrowSymbol>
-      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
-      <zIndex>0</zIndex>
-    </CyTransition>
-    <CyTransition>
       <Name>TRANSITION4</Name>
       <TransitionEquation>!HSYNC</TransitionEquation>
       <SourceName>STATE2</SourceName>
       <SinkName>STATE19</SinkName>
-      <SourceConnectorName>Connector</SourceConnectorName>
-      <SinkConnectorName>Connector</SinkConnectorName>
-      <SourceArrowSymbol>None</SourceArrowSymbol>
-      <SinkArrowSymbol>Arrow</SinkArrowSymbol>
-      <zIndex>0</zIndex>
-    </CyTransition>
-    <CyTransition>
-      <Name>TRANSITION2</Name>
-      <TransitionEquation>VSYNC</TransitionEquation>
-      <SourceName>STATE1</SourceName>
-      <SinkName>STATE2</SinkName>
       <SourceConnectorName>Connector</SourceConnectorName>
       <SinkConnectorName>Connector</SinkConnectorName>
       <SourceArrowSymbol>None</SourceArrowSymbol>

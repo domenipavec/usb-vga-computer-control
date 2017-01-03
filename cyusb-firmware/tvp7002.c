@@ -68,7 +68,7 @@ static CyU3PReturnStatus_t set_hsout(uint8_t sync_pulse, uint8_t back_porch) {
 		TVP7002_HSOUT_WIDTH +
 		back_porch +
 		sync_pulse +
-		1
+		2
 	);
 
 	// hsout width in pixels
@@ -126,7 +126,7 @@ CyU3PReturnStatus_t tvp7002_init() {
 	I2C_WRITE(TVP7002_ADDRESS, 0x13, 0x00);
 
 	// output mode 422
-	I2C_WRITE(TVP7002_ADDRESS, 0x15, 0x06);
+	I2C_WRITE(TVP7002_ADDRESS, 0x15, 0x02);
 
 	// outputs enabled
 	I2C_WRITE(TVP7002_ADDRESS, 0x17, 0x00);
