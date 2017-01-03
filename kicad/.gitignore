@@ -1,0 +1,15 @@
+*.xml
+
+# gerbers
+*.gbl
+*.gbs
+*.gbo
+*.gml
+*.gtl
+*.gts
+*.gto
+*.g2
+*.g3
+*.drl
+*.gm1
+*.zip

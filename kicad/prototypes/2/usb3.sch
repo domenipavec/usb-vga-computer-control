@@ -1,0 +1,416 @@
+EESchema Schematic File Version 2
+LIBS:prototype1-rescue
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:TI_tvp7002pzp
+LIBS:vga
+LIBS:cyusb301x-121bga
+LIBS:74xgxx
+LIBS:ac-dc
+LIBS:actel
+LIBS:allegro
+LIBS:Altera
+LIBS:analog_devices
+LIBS:battery_management
+LIBS:bbd
+LIBS:brooktre
+LIBS:cmos_ieee
+LIBS:dc-dc
+LIBS:diode
+LIBS:elec-unifil
+LIBS:ESD_Protection
+LIBS:ftdi
+LIBS:gennum
+LIBS:graphic
+LIBS:hc11
+LIBS:ir
+LIBS:Lattice
+LIBS:logo
+LIBS:maxim
+LIBS:mechanical
+LIBS:microchip_dspic33dsc
+LIBS:microchip_pic10mcu
+LIBS:microchip_pic12mcu
+LIBS:microchip_pic16mcu
+LIBS:microchip_pic18mcu
+LIBS:microchip_pic32mcu
+LIBS:motor_drivers
+LIBS:motors
+LIBS:msp430
+LIBS:nordicsemi
+LIBS:nxp_armmcu
+LIBS:onsemi
+LIBS:Oscillators
+LIBS:powerint
+LIBS:Power_Management
+LIBS:pspice
+LIBS:references
+LIBS:relays
+LIBS:rfcom
+LIBS:sensors
+LIBS:silabs
+LIBS:stm8
+LIBS:stm32
+LIBS:supertex
+LIBS:switches
+LIBS:transf
+LIBS:ttl_ieee
+LIBS:video
+LIBS:wiznet
+LIBS:Worldsemi
+LIBS:Xicor
+LIBS:zetex
+LIBS:Zilog
+LIBS:usb3_typeb
+LIBS:ncp360snt1g
+LIBS:usb3_esd
+LIBS:prototype1-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 6 7
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L USBLC6-2SC6 U8
+U 1 1 58686816
+P 5300 3550
+F 0 "U8" H 5050 3900 50  0000 C CNN
+F 1 "USBLC6-2SC6" H 5300 3200 50  0000 C CNN
+F 2 "TO_SOT_Packages_SMD:SOT-23-6" H 5950 3900 50  0001 C CNN
+F 3 "" H 5050 3900 50  0001 C CNN
+	1    5300 3550
+	-1   0    0    1   
+$EndComp
+$Comp
+L +5V #PWR0118
+U 1 1 5868681D
+P 4750 3550
+F 0 "#PWR0118" H 4750 3400 50  0001 C CNN
+F 1 "+5V" H 4750 3690 50  0000 C CNN
+F 2 "" H 4750 3550 50  0000 C CNN
+F 3 "" H 4750 3550 50  0000 C CNN
+	1    4750 3550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L USB3_TYPEB U5
+U 1 1 5868682D
+P 2950 3700
+F 0 "U5" H 2500 4150 60  0000 C CNN
+F 1 "USB3_TYPEB" H 2750 2950 60  0000 C CNN
+F 2 "usb3-typeb:USB3_TYPE_B" H 2950 3700 60  0001 C CNN
+F 3 "" H 2950 3700 60  0001 C CNN
+	1    2950 3700
+	1    0    0    -1  
+$EndComp
+Text GLabel 5900 3350 2    60   Input ~ 0
+USB3_D-
+Text GLabel 5900 3750 2    60   Input ~ 0
+USB3_D+
+$Comp
+L NCP360SNT1G U6
+U 1 1 58688040
+P 5250 2600
+F 0 "U6" H 5100 2950 60  0000 C CNN
+F 1 "NCP360SNT1G" H 5300 2250 60  0000 C CNN
+F 2 "TO_SOT_Packages_SMD:SOT-23-5" H 5250 2600 60  0001 C CNN
+F 3 "" H 5250 2600 60  0001 C CNN
+	1    5250 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4800 3550 4750 3550
+Wire Wire Line
+	5850 3550 5800 3550
+Wire Wire Line
+	4200 3750 4800 3750
+Wire Wire Line
+	4200 3350 4800 3350
+Wire Wire Line
+	3350 3500 4200 3500
+Wire Wire Line
+	4200 3500 4200 3350
+Wire Wire Line
+	4200 3750 4200 3600
+Wire Wire Line
+	4200 3600 3350 3600
+Wire Wire Line
+	5800 3750 5900 3750
+Wire Wire Line
+	5800 3350 5900 3350
+Wire Wire Line
+	3350 4000 2550 4000
+Wire Wire Line
+	2550 3700 2550 4200
+Wire Wire Line
+	3350 3700 2550 3700
+Connection ~ 2550 4000
+Wire Wire Line
+	4800 2800 4750 2800
+Wire Wire Line
+	4750 2600 4750 2850
+Wire Wire Line
+	4800 2600 4750 2600
+Connection ~ 4750 2800
+Wire Wire Line
+	3600 2400 4800 2400
+Wire Wire Line
+	3600 2400 3600 3400
+Wire Wire Line
+	3600 3400 3350 3400
+$Comp
+L +5V #PWR0119
+U 1 1 58688150
+P 5750 2350
+F 0 "#PWR0119" H 5750 2200 50  0001 C CNN
+F 1 "+5V" H 5750 2490 50  0000 C CNN
+F 2 "" H 5750 2350 50  0000 C CNN
+F 3 "" H 5750 2350 50  0000 C CNN
+	1    5750 2350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5700 2400 5900 2400
+Wire Wire Line
+	5750 2400 5750 2350
+NoConn ~ 5700 2800
+$Comp
+L C C60
+U 1 1 58688456
+P 4500 2600
+F 0 "C60" H 4525 2700 50  0000 L CNN
+F 1 "1uF" H 4525 2500 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 4538 2450 50  0001 C CNN
+F 3 "" H 4500 2600 50  0000 C CNN
+	1    4500 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4500 2800 4500 2750
+Wire Wire Line
+	4500 2450 4500 2400
+Connection ~ 4500 2400
+$Comp
+L C C61
+U 1 1 586885B4
+P 5900 2600
+F 0 "C61" H 5925 2700 50  0000 L CNN
+F 1 "1uF" H 5925 2500 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 5938 2450 50  0001 C CNN
+F 3 "" H 5900 2600 50  0000 C CNN
+	1    5900 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5900 2800 5900 2750
+Wire Wire Line
+	5900 2400 5900 2450
+Connection ~ 5750 2400
+$Comp
+L C C59
+U 1 1 5868891D
+P 3400 4500
+F 0 "C59" H 3425 4600 50  0000 L CNN
+F 1 "100nF" H 3425 4400 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0402" H 3438 4350 50  0001 C CNN
+F 3 "" H 3400 4500 50  0000 C CNN
+	1    3400 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3350 4300 3400 4300
+Wire Wire Line
+	3400 4300 3400 4350
+Wire Wire Line
+	3400 4700 3400 4650
+Text GLabel 3450 3800 2    60   Input ~ 0
+USB3_TX-
+Wire Wire Line
+	3350 3800 3450 3800
+Text GLabel 3450 3900 2    60   Input ~ 0
+USB3_TX+
+Text GLabel 3450 4100 2    60   Input ~ 0
+USB3_RX-
+Text GLabel 3450 4200 2    60   Input ~ 0
+USB3_RX+
+Wire Wire Line
+	3350 4200 3450 4200
+Wire Wire Line
+	3350 4100 3450 4100
+Wire Wire Line
+	3350 3900 3450 3900
+Text GLabel 4950 4600 0    60   Input ~ 0
+USB3_TX-
+Text GLabel 4950 4800 0    60   Input ~ 0
+USB3_TX+
+Text GLabel 4950 5000 0    60   Input ~ 0
+USB3_RX+
+Text GLabel 4950 5200 0    60   Input ~ 0
+USB3_RX-
+$Comp
+L GND #PWR0120
+U 1 1 586951C4
+P 4500 2800
+F 0 "#PWR0120" H 4500 2550 50  0001 C CNN
+F 1 "GND" H 4500 2650 50  0000 C CNN
+F 2 "" H 4500 2800 50  0000 C CNN
+F 3 "" H 4500 2800 50  0000 C CNN
+	1    4500 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR0121
+U 1 1 586951E4
+P 4750 2850
+F 0 "#PWR0121" H 4750 2600 50  0001 C CNN
+F 1 "GND" H 4750 2700 50  0000 C CNN
+F 2 "" H 4750 2850 50  0000 C CNN
+F 3 "" H 4750 2850 50  0000 C CNN
+	1    4750 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR0122
+U 1 1 58695204
+P 5900 2800
+F 0 "#PWR0122" H 5900 2550 50  0001 C CNN
+F 1 "GND" H 5900 2650 50  0000 C CNN
+F 2 "" H 5900 2800 50  0000 C CNN
+F 3 "" H 5900 2800 50  0000 C CNN
+	1    5900 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR0123
+U 1 1 5869522C
+P 5850 3550
+F 0 "#PWR0123" H 5850 3300 50  0001 C CNN
+F 1 "GND" H 5850 3400 50  0000 C CNN
+F 2 "" H 5850 3550 50  0000 C CNN
+F 3 "" H 5850 3550 50  0000 C CNN
+	1    5850 3550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L GND #PWR0124
+U 1 1 58695285
+P 2550 4200
+F 0 "#PWR0124" H 2550 3950 50  0001 C CNN
+F 1 "GND" H 2550 4050 50  0000 C CNN
+F 2 "" H 2550 4200 50  0000 C CNN
+F 3 "" H 2550 4200 50  0000 C CNN
+	1    2550 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR0125
+U 1 1 586952AC
+P 3400 4700
+F 0 "#PWR0125" H 3400 4450 50  0001 C CNN
+F 1 "GND" H 3400 4550 50  0000 C CNN
+F 2 "" H 3400 4700 50  0000 C CNN
+F 3 "" H 3400 4700 50  0000 C CNN
+	1    3400 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L NUP2105L D2
+U 1 1 586A16EC
+P 5350 4700
+F 0 "D2" V 5450 4500 50  0000 L CNN
+F 1 "NUP2105L" V 5550 4400 50  0000 L CNN
+F 2 "drt:DRT" H 5575 4650 50  0001 L CNN
+F 3 "" H 5475 4825 50  0001 C CNN
+	1    5350 4700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L NUP2105L D3
+U 1 1 586A186A
+P 5350 5100
+F 0 "D3" V 5200 4900 50  0000 L CNN
+F 1 "NUP2105L" V 5100 4800 50  0000 L CNN
+F 2 "drt:DRT" H 5575 5050 50  0001 L CNN
+F 3 "" H 5475 5225 50  0001 C CNN
+	1    5350 5100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4950 5000 5150 5000
+Wire Wire Line
+	4950 5200 5150 5200
+Wire Wire Line
+	4950 4600 5150 4600
+Wire Wire Line
+	4950 4800 5150 4800
+$Comp
+L GND #PWR0126
+U 1 1 586A1A7E
+P 5600 4750
+F 0 "#PWR0126" H 5600 4500 50  0001 C CNN
+F 1 "GND" H 5600 4600 50  0000 C CNN
+F 2 "" H 5600 4750 50  0000 C CNN
+F 3 "" H 5600 4750 50  0000 C CNN
+	1    5600 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 4700 5600 4700
+Wire Wire Line
+	5600 4700 5600 4750
+$Comp
+L GND #PWR0127
+U 1 1 586A1AD3
+P 5600 5150
+F 0 "#PWR0127" H 5600 4900 50  0001 C CNN
+F 1 "GND" H 5600 5000 50  0000 C CNN
+F 2 "" H 5600 5150 50  0000 C CNN
+F 3 "" H 5600 5150 50  0000 C CNN
+	1    5600 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 5100 5600 5100
+Wire Wire Line
+	5600 5100 5600 5150
+Text Label 3650 3500 0    60   ~ 0
+USB3_D1-
+Text Label 3650 3600 0    60   ~ 0
+USB3_D1+
+$EndSCHEMATC

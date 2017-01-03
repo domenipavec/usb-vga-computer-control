@@ -1,0 +1,8 @@
+(fp_lib_table
+  (lib (name attiny841-spi)(type KiCad)(uri /home/domen/github/usb-vga-computer-control/kicad/libraries/attiny841-spi.pretty)(options "")(descr ""))
+  (lib (name vga)(type KiCad)(uri /home/domen/github/usb-vga-computer-control/kicad/libraries/vga.pretty)(options "")(descr ""))
+  (lib (name bga121)(type KiCad)(uri /home/domen/github/usb-vga-computer-control/kicad/libraries/bga121.pretty)(options "")(descr ""))
+  (lib (name pushbutton)(type KiCad)(uri /home/domen/github/usb-vga-computer-control/kicad/libraries/pushbutton.pretty)(options "")(descr ""))
+  (lib (name usb3-typeb)(type KiCad)(uri /home/domen/github/usb-vga-computer-control/kicad/libraries/usb3-typeb.pretty)(options "")(descr ""))
+  (lib (name drt)(type KiCad)(uri /home/domen/github/usb-vga-computer-control/kicad/libraries/drt.pretty)(options "")(descr ""))
+)
