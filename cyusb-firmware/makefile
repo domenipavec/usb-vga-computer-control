@@ -26,7 +26,8 @@ SOURCE= uvc.c 			\
 	cyfxuvcdscr.c		\
 	i2c.c		\
 	tvp7002.c \
-	cyfxtx.c
+	cyfxtx.c \
+	usb_descriptors.c
 
 ifeq ($(CYFXBUILD),arm)
 SOURCE_ASM=cyfx_startup.S
@@ -51,6 +52,9 @@ cyfx_startup.S:
 cyfx_gcc_startup.S:
 	cp $(FX3FWROOT)/fw_build/fx3_fw/cyfx_gcc_startup.S .
 
+usb_descriptors.c: usb_descriptors.c.j2
+	usbgen -o usb_descriptors.c usb_descriptors.c.j2
+
 $(C_OBJECT) : %.o : %.c
 	$(COMPILE)
 
@@ -62,6 +66,7 @@ clean:
 	rm -f ./$(MODULE).map
 	rm -f ./*.o
 	rm -f cyfxtx.c cyfx_startup.S cyfx_gcc_startup.S
+	rm usb_descriptors.c
 
 $(MODULE).img: $(EXES)
 	$(FX3FWROOT)/util/elf2img/elf2img -i $(EXES) -o $(MODULE).img -v
