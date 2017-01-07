@@ -27,20 +27,6 @@
 
 #include "uvc.h"
 
-/* Standard Device Qualifier Descriptor */
-const uint8_t CyFxUSBDeviceQualDscr[] =
-    {
-        0x0A,                           /* Descriptor Size */
-        CY_U3P_USB_DEVQUAL_DESCR,       /* Device Qualifier Descriptor Type */
-        0x00,0x02,                      /* USB 2.0 */
-        0xEF,                           /* Device Class */
-        0x02,                           /* Device Sub-class */
-        0x01,                           /* Device protocol */
-        0x40,                           /* Maxpacket size for EP0 : 64 bytes */
-        0x01,                           /* Number of configurations */
-        0x00                            /* Reserved */
-    };
-
 /* Standard Full Speed Configuration Descriptor */
 const uint8_t CyFxUSBFSConfigDscr[] =
     {
@@ -300,31 +286,6 @@ const uint8_t CyFxUSBHSConfigDscr[] =
 #define CY_FX_USB2_EXTN_CAPB_TYPE       2
 #define CY_FX_SS_USB_CAPB_TYPE          3
 #define CY_FX_CONTAINER_ID_CAPBD_TYPE   4
-
-const uint8_t CyFxUSBBOSDscr[] =
-{
-        0x05,                           /* Descriptor Size */
-        CY_FX_BOS_DSCR_TYPE,            /* Device Descriptor Type */
-        0x16,0x00,                      /* Length of this descriptor and all sub descriptors */
-        0x02,                           /* Number of device capability descriptors */
-
-        /* USB 2.0 Extension */
-        0x07,                           /* Descriptor Size */
-        CY_FX_DEVICE_CAPB_DSCR_TYPE,    /* Device Capability Type descriptor */
-        CY_FX_USB2_EXTN_CAPB_TYPE,      /* USB 2.0 Extension Capability Type */
-        0x1E,0x64,0x00,0x00,            /* Supported device level features: LPM support, BESL supported,
-                                           Baseline BESL=400 us, Deep BESL=1000 us. */
-
-        /* SuperSpeed Device Capability */
-        0x0A,                           /* Descriptor Size */
-        CY_FX_DEVICE_CAPB_DSCR_TYPE,    /* Device Capability Type descriptor */
-        CY_FX_SS_USB_CAPB_TYPE,         /* SuperSpeed Device Capability Type */
-        0x00,                           /* Supported device level features  */
-        0x0E,0x00,                      /* Speeds Supported by the device : SS, HS and FS */
-        0x03,                           /* Functionality support */
-        0x00,                           /* U1 Device Exit Latency */
-        0x00,0x00                       /* U2 Device Exit Latency */
-};
 
 /* Super Speed Configuration Descriptor */
 const uint8_t CyFxUSBSSConfigDscr[] =

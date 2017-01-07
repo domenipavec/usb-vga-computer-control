@@ -22,10 +22,30 @@ const uint8_t UsbDescriptorDeviceUsb2[] = {{ usb.DeviceDescriptor(
 ) }};
 
 
-/* Device Descriptor for SS */
 const uint8_t UsbDescriptorDeviceUsb3[] = {{ usb.DeviceDescriptor(
 	usb_version = 3.1,
 	max_packet_size = 9,
+) }};
+
+const uint8_t UsbDescriptorDeviceQualifier[] = {{ usb.DeviceQualifierDescriptor(
+    usb_version = 2.0,
+    max_packet_size = 64,
+) }};
+
+const uint8_t UsbDescriptorBOS[] = {{ usb.BOSDescriptor(
+    usb.USB20ExtensionDescriptor(
+        lpm=True,
+        besl=True,
+        besl_baseline=usb.BESL.BESL_400,
+        besl_deep=usb.BESL.BESL_1000,
+    ),
+    usb.SuperSpeedDeviceCapabilityDescriptor(
+        supported_speed_low=0,
+        supported_speed_full=1,
+        supported_speed_high=1,
+        supported_speed_gen1=1,
+        full_functionality_support_speed=3,
+    ),
 ) }};
 
 const uint8_t UsbDescriptorStringLangid[] = {{ usb.StringDescriptor(usb.LANGUAGE_IDENTIFIER.ENGLISH_US) }};
