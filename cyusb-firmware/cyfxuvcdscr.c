@@ -27,44 +27,6 @@
 
 #include "uvc.h"
 
-/* Standard Device Descriptor */
-const uint8_t CyFxUSBDeviceDscr[] =
-    {
-        0x12,                           /* Descriptor Size */
-        CY_U3P_USB_DEVICE_DESCR,        /* Device Descriptor Type */
-        0x10,0x02,                      /* USB 2.0 */
-        0xEF,                           /* Device Class */
-        0x02,                           /* Device Sub-class */
-        0x01,                           /* Device protocol */
-        0x40,                           /* Maxpacket size for EP0 : 64 bytes */
-        0xB4,0x04,                      /* Vendor ID */
-        0xF8,0x00,                      /* Product ID */
-        0x00,0x00,                      /* Device release number */
-        0x01,                           /* Manufacture string index */
-        0x02,                           /* Product string index */
-        0x00,                           /* Serial number string index */
-        0x01                            /* Number of configurations */
-    };
-
-/* Device Descriptor for SS */
-const uint8_t CyFxUSBDeviceDscrSS[] =
-    {
-        0x12,                           /* Descriptor Size */
-        CY_U3P_USB_DEVICE_DESCR,        /* Device Descriptor Type */
-        0x10,0x03,                      /* USB 3.10 */
-        0xEF,                           /* Device Class */
-        0x02,                           /* Device Sub-class */
-        0x01,                           /* Device protocol */
-        0x09,                           /* Maxpacket size for EP0 : 2^9 Bytes */
-        0xB4,0x04,                      /* Vendor ID */
-        0xF9,0x00,                      /* Product ID */
-        0x00,0x00,                      /* Device release number */
-        0x01,                           /* Manufacture string index */
-        0x02,                           /* Product string index */
-        0x00,                           /* Serial number string index */
-        0x01                            /* Number of configurations */
-    };
-
 /* Standard Device Qualifier Descriptor */
 const uint8_t CyFxUSBDeviceQualDscr[] =
     {
@@ -607,13 +569,4 @@ const uint8_t CyFxUSBSSConfigDscr[] =
         0x00,                           /* Attribute: Streams not defined */
         0x00,                           /* No meaning for bulk */
         0x00
-    };
-
-
-/* Standard Language ID String Descriptor */
-const uint8_t CyFxUSBStringLangIDDscr[] =
-    {
-        0x04,                           /* Descriptor Size */
-        CY_U3P_USB_STRING_DESCR,        /* Device Descriptor Type */
-        0x09,0x04                       /* Language ID supported */
     };

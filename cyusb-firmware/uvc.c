@@ -69,6 +69,7 @@
 #include "uvc.h"
 #include "tvp7002.h"
 #include "cyfxgpif2config.h"
+#include "usb_descriptors.h"
 
 /*************************************************************************************************
                                          Global Variables
@@ -761,8 +762,8 @@ CyFxUVCApplnInit (void)
     CyU3PUsbRegisterEventCallback (CyFxUVCApplnUSBEventCB);
 
     /* Register the USB device descriptors with the driver. */
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_HS_DEVICE_DESCR, 0, (uint8_t *)CyFxUSBDeviceDscr);
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_SS_DEVICE_DESCR, 0, (uint8_t *)CyFxUSBDeviceDscrSS);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_HS_DEVICE_DESCR, 0, (uint8_t *)UsbDescriptorDeviceUsb2);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_SS_DEVICE_DESCR, 0, (uint8_t *)UsbDescriptorDeviceUsb3);
 
     /* BOS and Device qualifier descriptors. */
     CyU3PUsbSetDesc (CY_U3P_USB_SET_DEVQUAL_DESCR, 0, (uint8_t *)CyFxUSBDeviceQualDscr);
@@ -774,9 +775,9 @@ CyFxUVCApplnInit (void)
     CyU3PUsbSetDesc (CY_U3P_USB_SET_SS_CONFIG_DESCR, 0, (uint8_t *)CyFxUSBSSConfigDscr);
 
     /* String Descriptors */
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 0, (uint8_t *)CyFxUSBStringLangIDDscr);
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 1, (uint8_t *)CyFxUSBManufactureDscr);
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 2, (uint8_t *)CyFxUSBProductDscr);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 0, (uint8_t *)UsbDescriptorStringLangid);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 1, (uint8_t *)UsbDescriptorStringManufacturer);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 2, (uint8_t *)UsbDescriptorStringProduct);
 
     /* Configure the video streaming endpoint. */
     endPointConfig.enable   = 1;
