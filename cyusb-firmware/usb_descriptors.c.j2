@@ -7,13 +7,17 @@
 #include "usb_descriptors.h"
 
 {{ usb.defaults.set(
-	device_class = '0xef',
-	device_subclass = '0x02',
-	device_protocol = '0x01',
+	device_class = usb.CLASS.MISCELLANEOUS,
+	device_subclass = usb.SUBCLASS.INTERFACE_ASSOCIATION_DESCRIPTOR,
+	device_protocol = usb.PROTOCOL.INTERFACE_ASSOCIATION_DESCRIPTOR,
 	vendor_id = '0x04B4',
 	product_id = '0x00F9',
 	manufacturer_string = 1,
 	product_string = 2,
+
+    interface_class = usb.CLASS.VIDEO,
+
+    max_power = 50,
 ) }}
 
 const uint8_t UsbDescriptorDeviceUsb2[] = {{ usb.DeviceDescriptor(
@@ -45,6 +49,84 @@ const uint8_t UsbDescriptorBOS[] = {{ usb.BOSDescriptor(
         supported_speed_high=1,
         supported_speed_gen1=1,
         full_functionality_support_speed=3,
+    ),
+) }};
+
+const uint8_t UsbDescriptorConfigurationFS[] = {{ usb.ConfigurationDescriptor() }};
+
+const uint8_t UsbDescriptorConfigurationSS[] = {{ usb.ConfigurationDescriptor(
+    usb.InterfaceAssociationDescriptor(
+        first_interface_number=0,
+        interface_count=2,
+        interface_subclass=usb.video.SUBCLASS.SC_VIDEO_INTERFACE_COLLECTION,
+    ),
+
+    usb.InterfaceDescriptor(
+        interface_number=0,
+        endpoint_count=1,
+        interface_subclass=usb.video.SUBCLASS.SC_VIDEOCONTROL,
+    ),
+    usb.video.VideoClassControlInterfaceDescriptor(
+        usb.video.InputTerminalDescriptor(
+            terminal_id=1,
+        ),
+        usb.video.OutputTerminalDescriptor(
+            terminal_id=2,
+            output_terminal_type=usb.video.TERMINAL_TYPE.TT_STREAMING,
+            source_id=1,
+        ),
+        video_streaming_interfaces=[1],
+        video_class_specification=1.0,
+    ),
+    usb.EndpointDescriptor(
+        endpoint_number=2,
+        endpoint_in=True,
+        transfer_type=usb.ENDPOINT.TRANSFER_TYPE_INTERRUPT,
+        max_packet_size=1024,
+        interval=1,
+    ),
+    usb.SuperSpeedEndpointCompanionDescriptor(
+        bytes_per_interval=1024,
+    ),
+    usb.video.VideoClassInterruptEndpointDescriptor(
+        max_packet_size=64,
+    ),
+
+    usb.InterfaceDescriptor(
+        interface_number=1,
+        endpoint_count=1,
+        interface_subclass=usb.video.SUBCLASS.SC_VIDEOSTREAMING,
+    ),
+    usb.video.VideoClassStreamInInterfaceDescriptor(
+        usb.video.UncompressedVideoFormatDescriptor(
+            usb.video.UncompressedVideoFrameDescriptor(
+                frame_index=1,
+                still_image_supported=True,
+                fixed_frame_rate=1,
+                width=640,
+                height=480,
+                frame_rates=[60],
+            ),
+            format_index=1,
+            format_guid=usb.video.FORMAT_GUID.YUY2,
+            bits_per_pixel=16,
+            default_frame_index=1,
+            aspect_ratio_x=16,
+            aspect_ratio_y=9,
+        ),
+        video_data_endpoint=3,
+        output_terminal_id=2,
+        still_capture_method=1,
+    ),
+    usb.EndpointDescriptor(
+        endpoint_number=3,
+        endpoint_in=True,
+        transfer_type=usb.ENDPOINT.TRANSFER_TYPE_BULK,
+        max_packet_size=1024,
+        interval=1,
+    ),
+    usb.SuperSpeedEndpointCompanionDescriptor(
+        max_burst=16,
     ),
 ) }};
 

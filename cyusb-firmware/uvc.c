@@ -97,7 +97,7 @@ uint8_t glProbeCtrl[CY_FX_UVC_MAX_PROBE_SETTING] = {
     0x00, 0x00,                 /* bmHint : no hit */
     0x01,                       /* Use 1st Video format index */
     0x01,                       /* Use 1st Video frame index */
-    0x0a, 0x8b, 0x02, 0x00,     /* Desired frame interval in the unit of 100ns: 30 fps */
+    0x0b, 0x8b, 0x02, 0x00,     /* Desired frame interval in the unit of 100ns: 30 fps */
     0x00, 0x00,                 /* Key frame rate in key frame/video frame units: only applicable
                                    to video streaming with adjustable compression parameters */
     0x00, 0x00,                 /* PFrame rate in PFrame / key frame units: only applicable to
@@ -107,7 +107,7 @@ uint8_t glProbeCtrl[CY_FX_UVC_MAX_PROBE_SETTING] = {
     0x00, 0x00,                 /* Window size for average bit rate: only applicable to video
                                    streaming with adjustable compression parameters */
     0x00, 0x00,                 /* Internal video streaming i/f latency in ms */
-    0x00, 0x48, 0x3F, 0x00,     /* Max video frame size in bytes */
+    0x00, 0x60, 0x09, 0x00,     /* Max video frame size in bytes */
     0x00, 0x40, 0x00, 0x00      /* No. of bytes device can rx in single payload = 16 KB */
 };
 
@@ -771,8 +771,8 @@ CyFxUVCApplnInit (void)
 
     /* Configuration descriptors. */
     CyU3PUsbSetDesc (CY_U3P_USB_SET_HS_CONFIG_DESCR, 0, (uint8_t *)CyFxUSBHSConfigDscr);
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_FS_CONFIG_DESCR, 0, (uint8_t *)CyFxUSBFSConfigDscr);
-    CyU3PUsbSetDesc (CY_U3P_USB_SET_SS_CONFIG_DESCR, 0, (uint8_t *)CyFxUSBSSConfigDscr);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_FS_CONFIG_DESCR, 0, (uint8_t *)UsbDescriptorConfigurationFS);
+    CyU3PUsbSetDesc (CY_U3P_USB_SET_SS_CONFIG_DESCR, 0, (uint8_t *)UsbDescriptorConfigurationSS);
 
     /* String Descriptors */
     CyU3PUsbSetDesc (CY_U3P_USB_SET_STRING_DESCR, 0, (uint8_t *)UsbDescriptorStringLangid);
@@ -1159,21 +1159,21 @@ UVCAppEP0Thread_Entry (
             {
                 switch ((wIndex >> 8))
                 {
-                    case CY_FX_UVC_PROCESSING_UNIT_ID:
-                        UVCHandleProcessingUnitRqts ();
-                        break;
-
-                    case CY_FX_UVC_CAMERA_TERMINAL_ID:
-                        UVCHandleCameraTerminalRqts ();
-                        break;
-
+                    /* case CY_FX_UVC_PROCESSING_UNIT_ID: */
+                    /*     UVCHandleProcessingUnitRqts (); */
+                    /*     break; */
+                    /*  */
+                    /* case CY_FX_UVC_CAMERA_TERMINAL_ID: */
+                    /*     UVCHandleCameraTerminalRqts (); */
+                    /*     break; */
+                    /*  */
                     case CY_FX_UVC_INTERFACE_CTRL:
                         UVCHandleInterfaceCtrlRqts ();
                         break;
 
-                    case CY_FX_UVC_EXTENSION_UNIT_ID:
-                        UVCHandleExtensionUnitRqts ();
-                        break;
+                    /* case CY_FX_UVC_EXTENSION_UNIT_ID: */
+                        /* UVCHandleExtensionUnitRqts (); */
+                        /* break; */
 
                     default:
                         /* Unsupported request. Fail by stalling the control endpoint. */

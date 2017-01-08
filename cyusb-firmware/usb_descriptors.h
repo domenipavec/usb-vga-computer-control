@@ -16,6 +16,9 @@ extern const uint8_t UsbDescriptorDeviceUsb3[];
 extern const uint8_t UsbDescriptorDeviceQualifier[];
 extern const uint8_t UsbDescriptorBOS[];
 
+extern const uint8_t UsbDescriptorConfigurationFS[];
+extern const uint8_t UsbDescriptorConfigurationSS[];
+
 extern const uint8_t UsbDescriptorStringLangid[];
 extern const uint8_t UsbDescriptorStringManufacturer[];
 extern const uint8_t UsbDescriptorStringProduct[];

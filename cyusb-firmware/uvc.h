@@ -138,9 +138,9 @@
 #define CY_FX_UVC_COMMIT_CTRL           (uint16_t)(0x0200)      /* wValue setting used to access COMMIT control. */
 
 #define CY_FX_UVC_INTERFACE_CTRL        (uint8_t)(0)            /* wIndex value used to select UVC interface control. */
-#define CY_FX_UVC_CAMERA_TERMINAL_ID    (uint8_t)(1)            /* wIndex value used to select Camera terminal. */
-#define CY_FX_UVC_PROCESSING_UNIT_ID    (uint8_t)(2)            /* wIndex value used to select Processing Unit. */
-#define CY_FX_UVC_EXTENSION_UNIT_ID     (uint8_t)(3)            /* wIndex value used to select Extension Unit. */
+// #define CY_FX_UVC_CAMERA_TERMINAL_ID    (uint8_t)(1)            [> wIndex value used to select Camera terminal. <]
+// #define CY_FX_UVC_PROCESSING_UNIT_ID    (uint8_t)(2)            [> wIndex value used to select Processing Unit. <]
+// #define CY_FX_UVC_EXTENSION_UNIT_ID     (uint8_t)(3)            [> wIndex value used to select Extension Unit. <]
 
 /* Processing Unit specific UVC control selector codes defined in the USB Video Class specification. */
 #define CY_FX_UVC_PU_BACKLIGHT_COMPENSATION_CONTROL         (uint16_t)(0x0100)
@@ -187,9 +187,7 @@
    These arrays are defined in the cyfxuvcdscr.c file.
  */
 
-extern const uint8_t CyFxUSBFSConfigDscr[];             /* Full Speed Config descriptor. */
 extern const uint8_t CyFxUSBHSConfigDscr[];             /* High Speed Config descriptor. */
-extern const uint8_t CyFxUSBSSConfigDscr[];             /* USB 3.0 config descriptor. */
 
 #include <cyu3externcend.h>
 
