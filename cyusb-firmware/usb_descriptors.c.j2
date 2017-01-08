@@ -128,6 +128,57 @@ const uint8_t UsbDescriptorConfigurationSS[] = {{ usb.ConfigurationDescriptor(
     usb.SuperSpeedEndpointCompanionDescriptor(
         max_burst=16,
     ),
+
+	usb.InterfaceDescriptor(
+		interface_number=2,
+		endpoint_count=1,
+		interface_class=usb.CLASS.COMMUNICATION,
+		interface_subclass=usb.cdc.SUBCLASS.ABSTRACT_CONTROL_MODEL,
+		interface_protocol=usb.cdc.PROTOCOL.AT_COMMANDS_V250,
+	),
+	usb.cdc.HeaderFunctionalDescriptor(
+		communication_class_specification=1.1,
+	),
+	usb.cdc.AbstractControlManagementFunctionalDescriptor(
+		line_coding_state=True,
+	),
+	usb.cdc.UnionInterfaceFunctionalDescriptor(
+		control_interface=2,
+		subordinate_interfaces=[3],
+	),
+	usb.cdc.CallManagementFunctionalDescriptor(
+		data_interface=3,
+	),
+    usb.EndpointDescriptor(
+        endpoint_number=4,
+        endpoint_in=True,
+        transfer_type=usb.ENDPOINT.TRANSFER_TYPE_INTERRUPT,
+        max_packet_size=64,
+        interval=1,
+    ),
+    usb.SuperSpeedEndpointCompanionDescriptor(
+        bytes_per_interval=64,
+    ),
+
+	usb.InterfaceDescriptor(
+		interface_number=3,
+		endpoint_count=2,
+		interface_class=usb.CLASS.CDC_DATA,
+	),
+    usb.EndpointDescriptor(
+        endpoint_number=5,
+        endpoint_in=False,
+        transfer_type=usb.ENDPOINT.TRANSFER_TYPE_BULK,
+        max_packet_size=1024,
+    ),
+    usb.SuperSpeedEndpointCompanionDescriptor(),
+    usb.EndpointDescriptor(
+        endpoint_number=6,
+        endpoint_in=True,
+        transfer_type=usb.ENDPOINT.TRANSFER_TYPE_BULK,
+        max_packet_size=1024,
+    ),
+    usb.SuperSpeedEndpointCompanionDescriptor(),
 ) }};
 
 const uint8_t UsbDescriptorStringLangid[] = {{ usb.StringDescriptor(usb.LANGUAGE_IDENTIFIER.ENGLISH_US) }};
