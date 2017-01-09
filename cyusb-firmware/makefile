@@ -22,7 +22,8 @@ include $(FX3FWROOT)/fw_build/fx3_fw/fx3_build_config.mak
 
 MODULE = usb-vga-computer-control
 
-SOURCE= uvc.c 			\
+SOURCE = main.c \
+	uvc.c 			\
 	cyfxuvcdscr.c		\
 	i2c.c		\
 	tvp7002.c \
