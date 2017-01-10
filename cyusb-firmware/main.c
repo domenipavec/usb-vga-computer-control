@@ -8,6 +8,11 @@
 #include <cyu3error.h>
 #include <cyu3system.h>
 
+#include "uvc.h"
+
+static CyU3PThread uvcAppThread;
+static CyU3PThread uvcAppEP0Thread;
+
 int main(void) {
 	CyU3PReturnStatus_t apiRetStatus;
 
@@ -25,7 +30,7 @@ int main(void) {
 		goto handle_fatal_error;
 	}
 
-	const CyU3PIoMatrixConfig_t io_cfg = {
+	CyU3PIoMatrixConfig_t io_cfg = {
 		.isDQ32Bit = CyTrue, // gpif bus width
 		.s0Mode = 0, // storage port 0 disabled
 		.s1Mode = 0, // storage port 1 disabled
@@ -51,4 +56,53 @@ int main(void) {
 
 handle_fatal_error:
 	for (;;);
+}
+
+static void start_thread(CyU3PThread *thread, char *name, CyU3PThreadEntry_t entry) {
+	const uint32_t stack_size = 4096;
+	const uint32_t priority = 8;
+
+	void *ptr = CyU3PMemAlloc(stack_size);
+	if (ptr == NULL) {
+		goto fatalErrorHandler;
+	}
+
+	uint32_t ret = CyU3PThreadCreate(
+		thread,
+		name,
+		entry,
+		0,
+		ptr,
+		stack_size,
+		priority,
+		priority, // preempt threshold
+		CYU3P_NO_TIME_SLICE,
+		CYU3P_AUTO_START
+	);
+	if (ret != 0) {
+		goto fatalErrorHandler;
+	}
+
+	return;
+
+fatalErrorHandler:
+	for (;;);
+}
+
+/*
+ * This function is called by the FX3 framework once the ThreadX RTOS has started up.
+ * The application specific threads and other OS resources are created and initialized here.
+ */
+void CyFxApplicationDefine() {
+	start_thread(
+		&uvcAppThread,
+		"30:UVC App Thread",
+		UVCAppThread_Entry
+	);
+
+	start_thread(
+		&uvcAppEP0Thread,
+		"31:UVC App EP0 Thread",
+		UVCAppEP0Thread_Entry
+	);
 }

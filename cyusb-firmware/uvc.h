@@ -191,6 +191,9 @@ extern const uint8_t CyFxUSBHSConfigDscr[];             /* High Speed Config des
 
 #include <cyu3externcend.h>
 
+void UVCAppThread_Entry (uint32_t input);
+void UVCAppEP0Thread_Entry (uint32_t input);
+
 #endif /* _INCLUDED_CYFXUVCAPP_H_ */
 
 /*[]*/

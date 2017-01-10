@@ -74,8 +74,6 @@
 /*************************************************************************************************
                                          Global Variables
  *************************************************************************************************/
-static CyU3PThread   uvcAppThread;                      /* UVC video streaming thread. */
-static CyU3PThread   uvcAppEP0Thread;                   /* UVC control request handling thread. */
 static CyU3PEvent    glFxUVCEvent;                      /* Event group used to signal threads. */
 CyU3PDmaMultiChannel glChHandleUVCStream;               /* DMA multi-channel handle. */
 
@@ -848,10 +846,7 @@ CyFxUVCApplnInit (void)
 /*
  * Entry function for the UVC Application Thread
  */
-void
-UVCAppThread_Entry (
-        uint32_t input)
-{
+void UVCAppThread_Entry (uint32_t input) {
     CyU3PReturnStatus_t apiRetStatus;
     uint32_t            flag;
 
@@ -1140,10 +1135,7 @@ UVCHandleVideoStreamingRqts (
 /*
  * Entry function for the UVC control request processing thread.
  */
-void
-UVCAppEP0Thread_Entry (
-        uint32_t input)
-{
+void UVCAppEP0Thread_Entry (uint32_t input) {
     uint32_t eventMask = (CY_FX_UVC_VIDEO_CONTROL_REQUEST_EVENT | CY_FX_UVC_VIDEO_STREAM_REQUEST_EVENT);
     uint32_t eventFlag;
 
@@ -1200,61 +1192,4 @@ UVCAppEP0Thread_Entry (
     }
 }
 
-/*
- * This function is called by the FX3 framework once the ThreadX RTOS has started up.
- * The application specific threads and other OS resources are created and initialized here.
- */
-void
-CyFxApplicationDefine (
-        void)
-{
-    void *ptr1, *ptr2;
-    uint32_t retThrdCreate;
 
-    /* Allocate the memory for the thread stacks. */
-    ptr1 = CyU3PMemAlloc (UVC_APP_THREAD_STACK);
-    ptr2 = CyU3PMemAlloc (UVC_APP_THREAD_STACK);
-    if ((ptr1 == 0) || (ptr2 == 0))
-        goto fatalErrorHandler;
-
-    /* Create the UVC application thread. */
-    retThrdCreate = CyU3PThreadCreate (&uvcAppThread,   /* UVC Thread structure */
-            "30:UVC App Thread",                        /* Thread Id and name */
-            UVCAppThread_Entry,                         /* UVC Application Thread Entry function */
-            0,                                          /* No input parameter to thread */
-            ptr1,                                       /* Pointer to the allocated thread stack */
-            UVC_APP_THREAD_STACK,                       /* UVC Application Thread stack size */
-            UVC_APP_THREAD_PRIORITY,                    /* UVC Application Thread priority */
-            UVC_APP_THREAD_PRIORITY,                    /* Threshold value for thread pre-emption. */
-            CYU3P_NO_TIME_SLICE,                        /* No time slice for the application thread */
-            CYU3P_AUTO_START                            /* Start the Thread immediately */
-            );
-    if (retThrdCreate != 0)
-    {
-        goto fatalErrorHandler;
-    }
-
-    /* Create the control request handling thread. */
-    retThrdCreate = CyU3PThreadCreate (&uvcAppEP0Thread,        /* UVC Thread structure */
-            "31:UVC App EP0 Thread",                            /* Thread Id and name */
-            UVCAppEP0Thread_Entry,                              /* UVC Application EP0 Thread Entry function */
-            0,                                                  /* No input parameter to thread */
-            ptr2,                                               /* Pointer to the allocated thread stack */
-            UVC_APP_EP0_THREAD_STACK,                           /* UVC Application Thread stack size */
-            UVC_APP_EP0_THREAD_PRIORITY,                        /* UVC Application Thread priority */
-            UVC_APP_EP0_THREAD_PRIORITY,                        /* Threshold value for thread pre-emption. */
-            CYU3P_NO_TIME_SLICE,                                /* No time slice for the application thread */
-            CYU3P_AUTO_START                                    /* Start the Thread immediately */
-            );
-    if (retThrdCreate != 0)
-    {
-        goto fatalErrorHandler;
-    }
-
-    return;
-
-fatalErrorHandler:
-    /* Add custom recovery or debug actions here */
-    /* Loop indefinitely */
-    while (1);
-}
