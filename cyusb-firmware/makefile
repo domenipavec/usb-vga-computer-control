@@ -27,6 +27,7 @@ SOURCE = main.c \
 	cyfxuvcdscr.c		\
 	i2c.c		\
 	tvp7002.c \
+	uart.c \
 	cyfxtx.c \
 	usb_descriptors.c
 

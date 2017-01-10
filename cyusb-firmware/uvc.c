@@ -68,6 +68,7 @@
 
 #include "uvc.h"
 #include "tvp7002.h"
+#include "uart.h"
 #include "cyfxgpif2config.h"
 #include "usb_descriptors.h"
 
@@ -209,11 +210,22 @@ CyFxUVCApplnUSBEventCB (
 {
     switch (evtype)
     {
+		case CY_U3P_USB_EVENT_SETCONF:
+			uart_stop();
+			uart_start();
+			break;
+
+		case CY_U3P_USB_EVENT_CONNECT:
+			uart_stop();
+			break;
+
         case CY_U3P_USB_EVENT_RESET:
             CyU3PDebugPrint (4, "RESET encountered...\r\n");
             CyU3PGpifDisable (CyFalse);
             streamingStarted = CyFalse;
             CyFxUVCApplnAbortHandler ();
+
+			uart_stop();
             break;
 
         case CY_U3P_USB_EVENT_SUSPEND:
@@ -228,6 +240,8 @@ CyFxUVCApplnUSBEventCB (
             CyU3PGpifDisable (CyFalse);
             streamingStarted = CyFalse;
             CyFxUVCApplnAbortHandler ();
+
+			uart_stop();
             break;
 
         case CY_U3P_USB_EVENT_EP_UNDERRUN:
@@ -239,22 +253,9 @@ CyFxUVCApplnUSBEventCB (
     }
 }
 
-/* Callback to handle the USB Setup Requests and UVC Class events */
-static CyBool_t
-CyFxUVCApplnUSBSetupCB (
-        uint32_t setupdat0, /* SETUP Data 0 */
-        uint32_t setupdat1  /* SETUP Data 1 */
-        )
-{
-    CyBool_t uvcHandleReq = CyFalse;
+static CyBool_t uvc_usb_setup_cb() {
     uint32_t status;
-
-    /* Obtain Request Type and Request */
-    bmReqType = (uint8_t)(setupdat0 & CY_FX_USB_SETUP_REQ_TYPE_MASK);
-    bRequest  = (uint8_t)((setupdat0 & CY_FX_USB_SETUP_REQ_MASK) >> 8);
-    wValue    = (uint16_t)((setupdat0 & CY_FX_USB_SETUP_VALUE_MASK) >> 16);
-    wIndex    = (uint16_t)(setupdat1 & CY_FX_USB_SETUP_INDEX_MASK);
-    wLength   = (uint16_t)((setupdat1 & CY_FX_USB_SETUP_LENGTH_MASK) >> 16);
+    CyBool_t uvcHandleReq = CyFalse;
 
     /* Check for UVC Class Requests */
     switch (bmReqType)
@@ -385,6 +386,55 @@ CyFxUVCApplnUSBSetupCB (
 
     /* Return status of request handling to the USB driver */
     return uvcHandleReq;
+}
+
+/* Callback to handle the USB Setup Requests and UVC Class events */
+static CyBool_t
+CyFxUVCApplnUSBSetupCB (
+        uint32_t setupdat0, /* SETUP Data 0 */
+        uint32_t setupdat1  /* SETUP Data 1 */
+        )
+{
+	CyBool_t handled = CyFalse;
+
+    /* Obtain Request Type and Request */
+    bmReqType = (uint8_t)(setupdat0 & CY_FX_USB_SETUP_REQ_TYPE_MASK);
+    bRequest  = (uint8_t)((setupdat0 & CY_FX_USB_SETUP_REQ_MASK) >> 8);
+    wValue    = (uint16_t)((setupdat0 & CY_FX_USB_SETUP_VALUE_MASK) >> 16);
+    wIndex    = (uint16_t)(setupdat1 & CY_FX_USB_SETUP_INDEX_MASK);
+    wLength   = (uint16_t)((setupdat1 & CY_FX_USB_SETUP_LENGTH_MASK) >> 16);
+
+	uint8_t request_target = bmReqType & CY_U3P_USB_TARGET_MASK;
+
+	switch (request_target) {
+		case CY_U3P_USB_TARGET_INTF:
+			switch (wIndex & 0xff) {
+				case 0:
+				case 1:
+					handled = uvc_usb_setup_cb();
+					break;
+				case 2:
+				case 3:
+					handled = uart_usb_setup_cb(bmReqType, bRequest, wValue);
+					break;
+			}
+			break;
+		case CY_U3P_USB_TARGET_ENDPT:
+			switch (wIndex & 0xff) {
+				case 2:
+				case 3:
+					handled = uvc_usb_setup_cb();
+					break;
+				case 4:
+				case 5:
+				case 6:
+					handled = uart_usb_setup_cb(bmReqType, bRequest, wValue);
+					break;
+			}
+			break;
+	}
+
+	return handled;
 }
 
 /* DMA callback providing notification when data buffers are received from the sensor and when they have
@@ -855,6 +905,9 @@ void UVCAppThread_Entry (uint32_t input) {
 
     /* Initialize the I2C interface */
     CyFxUVCApplnI2CInit ();
+
+	// init uart
+	uart_init();
 
     /* Initialize the UVC Application */
     CyFxUVCApplnInit ();
