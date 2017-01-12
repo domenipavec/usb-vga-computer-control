@@ -30,6 +30,7 @@
 
 
 #include "bitop.h"
+#include "usb.h"
 
 volatile int8_t dx;
 
@@ -54,11 +55,78 @@ void uart_init() {
 }
 
 ISR(USART0_RX_vect) {
+	static uint8_t state = 0;
+	static uint8_t substate = 0;
 	uint8_t data = UDR0;
-	if (data == 'a') {
-		dx = 5;
-		UDR0 = 5;
-	} else if (data == 'b') {
-		dx = -5;
+	substate++;
+	switch (state) {
+		case 0:
+			if (data == 0xAA) {
+				state = 0xFF;
+			}
+			break;
+		case 0xFF:
+			state = data;
+			substate = 0;
+			break;
+		case 1:
+			switch (substate) {
+				case 1:
+					hid_report_mouse_abs.x.bytes[0] = data;
+					break;
+				case 2:
+					hid_report_mouse_abs.x.bytes[1] = data;
+					break;
+				case 3:
+					hid_report_mouse_abs.y.bytes[0] = data;
+					break;
+				case 4:
+					hid_report_mouse_abs.y.bytes[1] = data;
+					SETBIT(hid_report_dirty, HID_REPORT_MOUSE_ABS_DIRTY);
+					state = 0;
+					break;
+				default:
+					state = 0;
+					break;
+			}
+			break;
+		case 2:
+			hid_report_mouse_rel.buttonMask = data;
+			hid_report_mouse_rel.dx = 0;
+			hid_report_mouse_rel.dy = 0;
+			SETBIT(hid_report_dirty, HID_REPORT_MOUSE_REL_DIRTY);
+			state = 0;
+			break;
+		case 3:
+			switch (substate) {
+				case 1:
+					hid_report_mouse_abs.x.bytes[0] = data;
+					break;
+				case 2:
+					hid_report_mouse_abs.x.bytes[1] = data;
+					break;
+				case 3:
+					hid_report_mouse_abs.y.bytes[0] = data;
+					break;
+				case 4:
+					hid_report_mouse_abs.y.bytes[1] = data;
+					break;
+				case 5:
+					if (data) {
+						SETBIT(hid_report_mouse_abs.buttonMask, 0);
+					} else {
+						CLEARBIT(hid_report_mouse_abs.buttonMask, 0);
+					}
+					SETBIT(hid_report_dirty, HID_REPORT_MOUSE_ABS_DIRTY);
+					state = 0;
+					break;
+				default:
+					state = 0;
+					break;
+			}
+			break;
+		default:
+			state = 0;
+			break;
 	}
 }

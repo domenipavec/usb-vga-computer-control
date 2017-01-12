@@ -71,6 +71,13 @@ union hid_report_t {
 	hid_report_mouse_rel_t mouse_rel;
 };
 
-extern hid_report_t hid_report;
+extern volatile hid_report_mouse_rel_t hid_report_mouse_rel;
+extern volatile hid_report_keyboard_t hid_report_keyboard;
+extern volatile hid_report_mouse_abs_t hid_report_mouse_abs;
+
+const uint8_t HID_REPORT_MOUSE_REL_DIRTY = 0;
+const uint8_t HID_REPORT_KEYBOARD_DIRTY = 1;
+const uint8_t HID_REPORT_MOUSE_ABS_DIRTY = 2;
+extern volatile uint8_t hid_report_dirty;
 
 #endif

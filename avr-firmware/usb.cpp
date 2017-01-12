@@ -31,6 +31,8 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
+#include "bitop.h"
+
 PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = { /* USB report descriptor, size must match usbconfig.h */
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
     0x09, 0x02,                    // USAGE (Mouse)
@@ -127,17 +129,29 @@ PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
     0xc0                           // END_COLLECTION
 };
 
-hid_report_t hid_report = {
-	.keyboard = {
-		.report_id = 0,
-		.modifier = 0,
-		.reserved = 0,
-		.keycode = {0, 0, 0, 0, 0, 0},
-	}
+volatile hid_report_mouse_rel_t hid_report_mouse_rel = {
+	.report_id = 1,
+	.buttonMask = 0,
+	.dx = 0,
+	.dy = 0,
 };
 
-uint8_t hid_report_size = 0;
-static uint8_t already_sent = 0;
+volatile hid_report_keyboard_t hid_report_keyboard = {
+	.report_id = 2,
+	.modifier = 0,
+	.reserved = 0,
+	.keycode = {0, 0, 0, 0, 0, 0},
+};
+
+volatile hid_report_mouse_abs_t hid_report_mouse_abs = {
+	.report_id = 3,
+	.buttonMask = 2,
+	.x = {0},
+	.y = {0},
+};
+
+volatile uint8_t hid_report_dirty = 0;
+
 
 static uchar    idleRate;   /* repeat rate for keyboards, never used for mice */
 
@@ -153,15 +167,15 @@ usbRequest_t    *rq = (usbRequest_t *)data;
 			usbMsgLen_t size = 0;
 			switch (rq->wValue.bytes[0]) { // switch on report id
 				case 1:
-					usbMsgPtr = (uint16_t)&hid_report;
+					usbMsgPtr = (uint16_t)&hid_report_mouse_rel;
 					size = sizeof(hid_report_mouse_rel_t);
 					break;
 				case 2:
-					usbMsgPtr = (uint16_t)&hid_report;
+					usbMsgPtr = (uint16_t)&hid_report_keyboard;
 					size = sizeof(hid_report_keyboard_t);
 					break;
 				case 3:
-					usbMsgPtr = (uint16_t)&hid_report;
+					usbMsgPtr = (uint16_t)&hid_report_mouse_abs;
 					size = sizeof(hid_report_mouse_abs_t);
 					break;
 			}
@@ -192,21 +206,41 @@ void usb_init() {
 }
 
 void usb_loop() {
+	static int8_t to_send = 0;
+	static uint8_t *hid_report;
+
 	usbPoll();
+
 	if (usbInterruptIsReady()) {
 		cli();
-		uint8_t to_send = hid_report_size - already_sent;
-		if (to_send >= 8) {
-			usbSetInterrupt(((uint8_t *)&hid_report) + already_sent, 8);
-			already_sent += 8;
+		if (to_send == 0) {
+			if (BITSET(hid_report_dirty, HID_REPORT_MOUSE_REL_DIRTY)) {
+				CLEARBIT(hid_report_dirty, HID_REPORT_MOUSE_REL_DIRTY);
+				to_send = sizeof(hid_report_mouse_rel);
+				hid_report = (uint8_t *)&hid_report_mouse_rel;
+			} else if (BITSET(hid_report_dirty, HID_REPORT_KEYBOARD_DIRTY)) {
+				CLEARBIT(hid_report_dirty, HID_REPORT_KEYBOARD_DIRTY);
+				to_send = sizeof(hid_report_keyboard);
+				hid_report = (uint8_t *)&hid_report_keyboard;
+			} else if (BITSET(hid_report_dirty, HID_REPORT_MOUSE_ABS_DIRTY)) {
+				CLEARBIT(hid_report_dirty, HID_REPORT_MOUSE_ABS_DIRTY);
+				to_send = sizeof(hid_report_mouse_abs);
+				hid_report = (uint8_t *)&hid_report_mouse_abs;
+			}
+		}
+		if (to_send > 8) {
+			usbSetInterrupt(hid_report, 8);
+			to_send -= 8;
+			hid_report += 8;
+		} else if (to_send == 8) {
+			usbSetInterrupt(hid_report, 8);
+			to_send = -1;
 		} else if (to_send > 0) {
-			usbSetInterrupt(((uint8_t *)&hid_report) + already_sent, to_send);
-			already_sent = 0;
-			hid_report_size = 0;
-		} else if (hid_report_size > 0) {
-			usbSetInterrupt((uint8_t *)&hid_report, 0);
-			already_sent = 0;
-			hid_report_size = 0;
+			usbSetInterrupt(hid_report, to_send);
+			to_send = 0;
+		} else if (to_send == -1) {
+			usbSetInterrupt(hid_report, 0);
+			to_send = 0;
 		}
 		sei();
 	}

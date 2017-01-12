@@ -146,6 +146,7 @@ HEXFORMAT=ihex
 CFLAGS=-I. $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
+	-fstack-usage \
 	-Wall               \
 	-DF_CPU=$(F_CPU)    \
 	-Wa,-ahlms=$(firstword                  \
