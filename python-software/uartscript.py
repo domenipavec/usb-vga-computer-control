@@ -4,18 +4,19 @@ import sys
 
 
 ser = None
+error = None
 for i in range(3):
+    error = None
     try:
         ser = serial.Serial('/dev/ttyACM{n}'.format(n=i), 19200)
-    except serial.serialutil.SerialException:
-        pass
+        print("Connected to: " + ser.name)
+        break
+    except serial.serialutil.SerialException as e:
+        error = e
 
-    print("Connected to: " + ser.name)
+if error is not None:
+    raise error
 
+ser.write("\xAA" + ''.join(chr(int(x, 16)) for x in sys.argv[1:]))
 
-if len(sys.argv) == 2:
-    ser.write(sys.argv[1])
-else:
-    print("Usage: ./uartscript.py data")
-
-print(hex(ord(ser.read())))
+#  print(hex(ord(ser.read())))
