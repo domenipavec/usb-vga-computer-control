@@ -125,6 +125,33 @@ ISR(USART0_RX_vect) {
 					break;
 			}
 			break;
+		case 4:
+			switch (substate) {
+				case 1:
+					hid_report_keyboard.keycode[0] = data;
+					break;
+				case 2:
+					hid_report_keyboard.keycode[1] = data;
+					break;
+				case 3:
+					hid_report_keyboard.keycode[2] = data;
+					break;
+				case 4:
+					hid_report_keyboard.keycode[3] = data;
+					break;
+				case 5:
+					hid_report_keyboard.keycode[4] = data;
+					break;
+				case 6:
+					hid_report_keyboard.keycode[5] = data;
+					break;
+				case 7:
+					hid_report_keyboard.modifier = data;
+					SETBIT(hid_report_dirty, HID_REPORT_KEYBOARD_DIRTY);
+					state = 0;
+					break;
+			}
+			break;
 		default:
 			state = 0;
 			break;
