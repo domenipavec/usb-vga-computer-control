@@ -27,6 +27,8 @@
 #ifndef USB_H
 #define USB_H
 
+#include "stdint.h"
+
 #ifdef __cplusplus
 #define EXTERNC extern "C"
 #else
@@ -41,5 +43,34 @@ EXTERNC usbMsgLen_t usbFunctionSetup(uchar data[8]);
 
 void usb_init();
 void usb_loop();
+
+struct hid_report_mouse_rel_t {
+	uint8_t report_id;
+    uint8_t   buttonMask;
+    char    dx;
+    char    dy;
+};
+
+struct hid_report_keyboard_t {
+    uint8_t report_id;
+    uint8_t modifier;
+    uint8_t reserved;
+    uint8_t keycode[6];
+};
+
+struct hid_report_mouse_abs_t {
+	uint8_t report_id;
+    uint8_t buttonMask;
+    usbWord_t    x;
+    usbWord_t    y;
+};
+
+union hid_report_t {
+	hid_report_mouse_abs_t mouse_abs;
+	hid_report_keyboard_t keyboard;
+	hid_report_mouse_rel_t mouse_rel;
+};
+
+extern hid_report_t hid_report;
 
 #endif
