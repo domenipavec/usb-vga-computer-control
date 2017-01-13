@@ -6,6 +6,8 @@ import serial
 from subprocess import call
 import time
 
+from keys import keymap, modifiers
+
 WINDOW = 'Usb vga computer control'
 
 ser = None
@@ -28,6 +30,7 @@ def send(data):
 
 
 buttonstate = 0
+modifiersstate = 0
 keys = []
 
 
@@ -45,13 +48,21 @@ def clear_button(i):
     send('\x02' + chr(buttonstate))
 
 
+def set_modifier(k):
+    global modifiersstate
+    if k in modifiers:
+        modifiersstate |= (1 << modifiers[k])
+
+
+def clear_modifier(k):
+    global modifiersstate
+    if k in modifiers:
+        modifiersstate &= ~(1 << modifiers[k])
+
+
 def map_key(k):
-    if ord('a') <= k <= ord('z'):
-        return 4 + k - ord('a')
-    elif ord('1') <= k <= ord('9'):
-        return 30 + k - ord('1')
-    elif ord('0') == k:
-        return 39
+    if k in keymap:
+        return keymap[k]
     else:
         return None
 
@@ -60,24 +71,24 @@ def send_keys():
     data = ''.join(chr(k) for k in keys[:6])
     for i in range(6 - len(data)):
         data += '\x00'
-    send('\x04' + data + '\x00')
+    send('\x04' + data + chr(modifiersstate))
 
 
 def set_key(k):
     global keys
+    set_modifier(k)
     k = map_key(k)
-    if k is None:
-        return
-    keys.append(k)
+    if k is not None:
+        keys.append(k)
     send_keys()
 
 
 def clear_key(k):
     global keys
+    clear_modifier(k)
     k = map_key(k)
-    if k is None:
-        return
-    keys.remove(k)
+    if k is not None:
+        keys.remove(k)
     send_keys()
 
 
