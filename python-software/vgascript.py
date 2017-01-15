@@ -4,6 +4,7 @@ import numpy
 import pygame
 import serial
 from subprocess import call
+import sys
 import time
 
 from keys import keymap, modifiers
@@ -92,9 +93,14 @@ def clear_key(k):
     send_keys()
 
 
-call(["v4l2-ctl", "-v", "height=480", "-v", "width=640", "-v", "pixelformat=YUY2"])
+video_device = "/dev/video0"
+if len(sys.argv) > 1:
+    video_device = sys.argv[1]
 
-cap = cv2.VideoCapture(0)
+
+call(["v4l2-ctl", "-d", video_device, "-v", "height=480", "-v", "width=640", "-v", "pixelformat=YUY2"])
+
+cap = cv2.VideoCapture(int(video_device[-1]))
 cap.set(3, 640)
 cap.set(4, 480)
 
