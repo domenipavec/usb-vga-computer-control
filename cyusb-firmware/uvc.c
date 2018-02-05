@@ -902,6 +902,7 @@ void UVCAppThread_Entry (uint32_t input) {
 
 	/* Initialize the Uart Debug Module */
 	/* CyFxUVCApplnDebugInit (); */
+    /* CyU3PDebugPrint(4, "Debug initialized ...\n"); */
 
 	/* Initialize the I2C interface */
 	CyFxUVCApplnI2CInit ();

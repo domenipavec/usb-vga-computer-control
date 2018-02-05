@@ -15,6 +15,8 @@
 ##
 
 FX3FWROOT=${HOME}/Cypress/cyfx3sdk
+CYDEVICE = CYUSB3011
+CYCONFOPT=fx3_release
 
 all:compile
 
@@ -67,7 +69,7 @@ clean:
 	rm -f ./$(MODULE).$(EXEEXT)
 	rm -f ./$(MODULE).map
 	rm -f ./*.o
-	rm -f cyfxtx.c cyfx_startup.S cyfx_gcc_startup.S
+	rm -f cyfx_startup.S cyfx_gcc_startup.S
 	rm usb_descriptors.c
 
 $(MODULE).img: $(EXES)

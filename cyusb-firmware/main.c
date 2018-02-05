@@ -31,10 +31,10 @@ int main(void) {
 	}
 
 	CyU3PIoMatrixConfig_t io_cfg = {
-		.isDQ32Bit = CyTrue, // gpif bus width
+		.isDQ32Bit = CyFalse, // gpif bus width
 		.s0Mode = 0, // storage port 0 disabled
 		.s1Mode = 0, // storage port 1 disabled
-		.lppMode = CY_U3P_IO_MATRIX_LPP_DEFAULT, // default peripheral pins layout with everything enabled
+		.lppMode = CY_U3P_IO_MATRIX_LPP_UART_ONLY, // default peripheral pins layout with everything enabled
 
 		.gpioSimpleEn = {0, 0}, // which pins are configured as simple gpio
 		.gpioComplexEn = {0, 0}, // which pins are configured as complex gpio
@@ -59,7 +59,7 @@ handle_fatal_error:
 }
 
 static void start_thread(CyU3PThread *thread, char *name, CyU3PThreadEntry_t entry) {
-	const uint32_t stack_size = 4096;
+	const uint32_t stack_size = 1024;
 	const uint32_t priority = 8;
 
 	void *ptr = CyU3PMemAlloc(stack_size);

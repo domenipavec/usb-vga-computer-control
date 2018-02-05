@@ -62,7 +62,7 @@
 #define CY_FX_UVC_BUF_FULL_SIZE        (CY_FX_UVC_STREAM_BUF_SIZE - 16)
 
 /* Number of DMA buffers per GPIF DMA thread. */
-#define CY_FX_UVC_STREAM_BUF_COUNT     (4)
+#define CY_FX_UVC_STREAM_BUF_COUNT     (2)
 
 /* Low Byte - UVC Video Streaming Endpoint Packet Size */
 #define CY_FX_EP_BULK_VIDEO_PKT_SIZE_L  (uint8_t)(CY_FX_EP_BULK_VIDEO_PKT_SIZE & 0x00FF)
